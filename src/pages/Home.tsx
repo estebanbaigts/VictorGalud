@@ -39,7 +39,7 @@ const Home = () => {
       <div className="h-screen flex flex-col items-center justify-center bg-black text-white">
         <div className="flex flex-col items-center justify-center min-h-screen space-y-20">
           <img
-            src="https://images.unsplash.com/photo-1461360228754-6e81c478b882?auto=format&fit=crop&q=80"
+            src="./vinyle.png"
             alt="Camera"
             className="w-1/2 h-auto animate-spin-slow"
           />

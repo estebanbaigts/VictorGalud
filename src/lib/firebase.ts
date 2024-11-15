@@ -4,12 +4,13 @@ import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyB9UvV8IxdqenQVZODyoHNbgFTlzrpG1Jc",
+  authDomain: "victor-galud.firebaseapp.com",
+  projectId: "victor-galud",
+  storageBucket: "victor-galud.firebasestorage.app",
+  messagingSenderId: "36097889414",
+  appId: "1:36097889414:web:0917d8a35da208e9eeed07",
+  measurementId: "G-XGJXEWYX3C"
 };
 
 const app = initializeApp(firebaseConfig);
