@@ -21,7 +21,7 @@ const PhotoGallery = ({ photos, selectedCategory, onCategoryChange }: PhotoGalle
     : photos.filter(photo => photo.category === selectedCategory);
 
   const breakpointColumns = {
-    default: 3,
+    default: 4,
     1100: 2,
     700: 1
   };
