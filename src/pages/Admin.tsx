@@ -98,10 +98,11 @@ const Admin = () => {
               onChange={(e) => setCategory(e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-md"
             >
+              <option value="voyage">Voyage</option>
+              <option value="argentique">Argentique</option>
               <option value="portrait">Portrait</option>
-              <option value="mariage">Mariage</option>
-              <option value="événement">Événement</option>
-              <option value="nature">Nature</option>
+              <option value="exposition">Exposition</option>
+              <option value="video">Video</option>
             </select>
           </div>
 

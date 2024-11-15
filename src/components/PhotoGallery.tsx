@@ -14,7 +14,7 @@ interface PhotoGalleryProps {
 }
 
 const PhotoGallery = ({ photos, selectedCategory, onCategoryChange }: PhotoGalleryProps) => {
-  const categories = ['all', 'voyage', 'argentique', 'profil', 'expo', 'video'];
+  const categories = ['all', 'voyage', 'argentique', 'portrait', 'exposition', 'video'];
   
   const filteredPhotos = selectedCategory === 'all'
     ? photos

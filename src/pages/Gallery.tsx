@@ -13,7 +13,7 @@ interface Photo {
 const Gallery = () => {
   const [photos, setPhotos] = useState<Photo[]>([]);
   const [selectedCategory, setSelectedCategory] = useState('all');
-  const categories = ['all', 'portrait', 'mariage', 'événement', 'nature'];
+  const categories = ['all', 'voyage', 'argentique', 'portrait', 'exposition', 'video'];
 
   useEffect(() => {
     const fetchPhotos = async () => {
