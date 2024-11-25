@@ -1,68 +1,46 @@
-import React from 'react';
-import Masonry from 'react-masonry-css';
-
-interface Photo {
-  id: string;
-  url: string;
-  category: string;
-}
+import React, { useState } from 'react';
+import { useInView } from 'react-intersection-observer';
+import { Photo } from '../types';
+import { PhotoModal } from './PhotoModal';
 
 interface PhotoGalleryProps {
   photos: Photo[];
-  selectedCategory: string;
-  onCategoryChange: (category: string) => void;
 }
 
-const PhotoGallery = ({ photos, selectedCategory, onCategoryChange }: PhotoGalleryProps) => {
-  const categories = ['all', 'voyage', 'argentique', 'portrait', 'exposition', 'video'];
-  
-  const filteredPhotos = selectedCategory === 'all'
-    ? photos
-    : photos.filter(photo => photo.category === selectedCategory);
-
-  const breakpointColumns = {
-    default: 4,
-    1100: 2,
-    700: 1
-  };
+export const PhotoGallery: React.FC<PhotoGalleryProps> = ({ photos }) => {
+  const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
+  const { ref, inView } = useInView({
+    threshold: 0.1,
+    triggerOnce: true
+  });
 
   return (
-    <div id="gallery" className="min-h-screen bg-black text-white py-20 px-4">
-      <div className="max-w-7xl mx-auto">
-        <div className="flex justify-center space-x-4 mb-12">
-          {categories.map(category => (
-            <button
-              key={category}
-              onClick={() => onCategoryChange(category)}
-              className={`px-4 py-2 rounded-md transition-colors duration-200 ${
-                selectedCategory === category
-                  ? 'bg-white text-black'
-                  : 'bg-gray-800 text-white hover:bg-gray-700'
-              }`}
+    <>
+      <section ref={ref} className="container mx-auto px-4 py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+          {photos.map((photo) => (
+            <div
+              key={photo.id}
+              onClick={() => setSelectedPhoto(photo)}
+              className="relative group overflow-hidden rounded-lg cursor-pointer aspect-square"
             >
-              {category.charAt(0).toUpperCase() + category.slice(1)}
-            </button>
-          ))}
-        </div>
-
-        <Masonry
-          breakpointCols={breakpointColumns}
-          className="flex -ml-4 w-auto"
-          columnClassName="pl-4 bg-clip-padding"
-        >
-          {filteredPhotos.map(photo => (
-            <div key={photo.id} className="mb-4">
               <img
                 src={photo.url}
-                alt={photo.category}
-                className="rounded-lg hover:opacity-75 transition-opacity duration-200"
+                alt={photo.name}
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
               />
+              <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
+                <h3 className="text-lg font-semibold">{photo.name}</h3>
+                <p className="text-sm text-gray-300">{photo.category}</p>
+              </div>
             </div>
           ))}
-        </Masonry>
-      </div>
-    </div>
+        </div>
+      </section>
+
+      {selectedPhoto && (
+        <PhotoModal photo={selectedPhoto} onClose={() => setSelectedPhoto(null)} />
+      )}
+    </>
   );
 };
-
-export default PhotoGallery;

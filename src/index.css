@@ -2,15 +2,54 @@
 @tailwind components;
 @tailwind utilities;
 
-@keyframes spin-slow {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
 }
 
-.animate-spin-slow {
-  animation: spin-slow 20s linear infinite;
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+
+.masonry-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-auto-rows: 0;
+  grid-gap: 1.5rem;
+}
+
+.photo-item {
+  grid-row-end: span var(--row-span);
+  transition: transform 0.3s ease;
+}
+
+.photo-item:hover {
+  transform: scale(1.02);
+  z-index: 1;
+}
+
+.diagonal-split {
+  position: relative;
+  overflow: hidden;
+}
+
+.diagonal-split::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(0,0,0,0.8) 0%, transparent 100%);
+  z-index: -1;
+}
+
+.text-shadow {
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+.glass-effect {
+  backdrop-filter: blur(8px);
+  background: rgba(0, 0, 0, 0.3);
 }
