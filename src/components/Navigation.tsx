@@ -1,5 +1,5 @@
 import React from 'react';
-import { Menu, X } from 'lucide-react';
+import { Camera, Menu, X } from 'lucide-react';
 
 interface NavigationProps {
   isMenuOpen: boolean;
@@ -41,7 +41,7 @@ export const Navigation: React.FC<NavigationProps> = ({
             {['Home', 'Gallery', 'Contact'].map((item) => (
               <a
                 key={item}
-                href={`${item === 'Home' ? '#' : `#${item.toLowerCase()}`}`}
+                href={`${item === 'Home' ? '#' : item === 'Admin' ? '/admin' : `#${item.toLowerCase()}`}`}
                 className="text-white hover:text-gray-300 transition-all duration-300 relative group"
               >
                 {item}

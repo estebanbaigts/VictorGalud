@@ -3,6 +3,32 @@ import { Upload, Trash2, ArrowLeft } from 'lucide-react';
 import { Photo } from '../types';
 import * as api from '../services/api';
 
+const categories = [
+  {
+    id: 'photos',
+    label: 'Photos',
+    subcategories: [
+      { id: 'numerique', label: 'Numérique' },
+      { id: 'argentique', label: 'Argentique' }
+    ]
+  },
+  {
+    id: 'expo',
+    label: 'Expo',
+    subcategories: [
+      { id: 'odorat', label: 'Un regard vers l\'odorat' },
+      { id: 'around-world', label: 'Around the world portrait' }
+    ]
+  },
+  {
+    id: 'video',
+    label: 'Vidéo',
+    subcategories: [
+      { id: 'documentary', label: 'Documentary on Artist' }
+    ]
+  }
+];
+
 interface AdminPanelProps {
   photos: Photo[];
   onPhotoChange: () => void;
@@ -11,20 +37,21 @@ interface AdminPanelProps {
 export const AdminPanel: React.FC<AdminPanelProps> = ({ photos, onPhotoChange }) => {
   const [uploading, setUploading] = useState(false);
   const [name, setName] = useState('');
-  const [category, setCategory] = useState('');
+  const [selectedMainCategory, setSelectedMainCategory] = useState('photos');
+  const [selectedSubcategory, setSelectedSubcategory] = useState('');
   const [error, setError] = useState<string | null>(null);
 
   const handleUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (!file) return;
+    if (!file || !selectedSubcategory) return;
 
     try {
       setError(null);
       setUploading(true);
-      await api.uploadPhoto(file, name, category);
+      await api.uploadPhoto(file, name, selectedSubcategory);
       onPhotoChange();
       setName('');
-      setCategory('');
+      setSelectedSubcategory('');
     } catch (error) {
       setError('Failed to upload photo. Please try again.');
       console.error('Failed to upload photo:', error);
@@ -48,11 +75,13 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ photos, onPhotoChange })
     }
   };
 
+  const currentCategory = categories.find(cat => cat.id === selectedMainCategory);
+
   return (
     <div className="min-h-screen bg-gray-900 p-8">
       <div className="max-w-6xl mx-auto">
         <div className="flex items-center justify-between mb-8">
-          <h1 className="text-4xl text-white font-bold">Admin Panel</h1>
+          <h1 className="text-4xl font-bold">Admin Panel</h1>
           <a
             href="/"
             className="inline-flex items-center gap-2 text-gray-300 hover:text-white transition-colors"
@@ -69,32 +98,66 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ photos, onPhotoChange })
         )}
         
         <div className="bg-gray-800 p-6 rounded-lg mb-8">
-          <h2 className="text-2xl font-semibold mb-4">Upload New Photo</h2>
+          <h2 className="text-2xl font-semibold mb-6">Upload New Content</h2>
+          
           <div className="space-y-4">
+            {/* Main Category Selection */}
+            <div className="flex gap-4">
+              {categories.map(category => (
+                <button
+                  key={category.id}
+                  onClick={() => {
+                    setSelectedMainCategory(category.id);
+                    setSelectedSubcategory('');
+                  }}
+                  className={`px-4 py-2 rounded-lg transition-colors ${
+                    selectedMainCategory === category.id
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-gray-700 hover:bg-gray-600'
+                  }`}
+                >
+                  {category.label}
+                </button>
+              ))}
+            </div>
+
+            {/* Subcategory Selection */}
+            {currentCategory && (
+              <div className="flex gap-3">
+                {currentCategory.subcategories.map(sub => (
+                  <button
+                    key={sub.id}
+                    onClick={() => setSelectedSubcategory(sub.id)}
+                    className={`px-3 py-1 rounded-full text-sm transition-colors ${
+                      selectedSubcategory === sub.id
+                        ? 'bg-blue-500 text-white'
+                        : 'bg-gray-700 hover:bg-gray-600'
+                    }`}
+                  >
+                    {sub.label}
+                  </button>
+                ))}
+              </div>
+            )}
+
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="Photo name"
-              className="w-full px-4 py-2 bg-gray-700 rounded"
+              placeholder="Content name"
+              className="w-full px-4 py-2 bg-gray-700 rounded focus:ring-2 focus:ring-blue-500 outline-none"
             />
-            <input
-              type="text"
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              placeholder="Category"
-              className="w-full px-4 py-2 bg-gray-700 rounded"
-            />
+
             <label className="block">
               <span className="bg-blue-600 px-6 py-3 rounded-lg cursor-pointer hover:bg-blue-700 transition-colors inline-flex items-center gap-2">
                 <Upload className="w-5 h-5" />
-                {uploading ? 'Uploading...' : 'Upload Photo'}
+                {uploading ? 'Uploading...' : 'Upload Content'}
               </span>
               <input
                 type="file"
-                accept="image/*"
+                accept="image/*,video/*"
                 onChange={handleUpload}
-                disabled={uploading}
+                disabled={uploading || !selectedSubcategory}
                 className="hidden"
               />
             </label>
