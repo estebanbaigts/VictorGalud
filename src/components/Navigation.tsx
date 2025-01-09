@@ -14,7 +14,7 @@ export const Navigation: React.FC<NavigationProps> = ({
 }) => {
   return (
     <nav className={`fixed w-full z-50 transition-all duration-300 ${
-      scrolled ? 'bg-black/90 backdrop-blur-sm py-2' : 'bg-transparent py-4'
+      scrolled ? 'backdrop-blur-sm py-2' : 'py-4'
     }`}>
       <div className="container mx-auto px-4 flex justify-between items-center">
         <div className="flex items-center space-x-2">
