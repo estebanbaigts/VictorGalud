@@ -6,27 +6,17 @@ import * as api from '../services/api';
 const categories = [
   {
     id: 'photos',
-    label: 'Photos',
-    subcategories: [
-      { id: 'numerique', label: 'Numérique' },
-      { id: 'argentique', label: 'Argentique' }
-    ]
+    label: 'Lifestyle', // Pas de sous-catégorie pour Lifestyle
   },
   {
     id: 'expo',
-    label: 'Expo',
+    label: 'Exposition',
     subcategories: [
       { id: 'odorat', label: 'Un regard vers l\'odorat' },
-      { id: 'around-world', label: 'Around the world portrait' }
+      { id: 'monde', label: 'Around the world portrait' },
+      { id: 'voyage', label: 'Plage argentique' },
     ]
   },
-  {
-    id: 'video',
-    label: 'Vidéo',
-    subcategories: [
-      { id: 'documentary', label: 'Documentary on Artist' }
-    ]
-  }
 ];
 
 interface AdminPanelProps {
@@ -37,18 +27,23 @@ interface AdminPanelProps {
 export const AdminPanel: React.FC<AdminPanelProps> = ({ photos, onPhotoChange }) => {
   const [uploading, setUploading] = useState(false);
   const [name, setName] = useState('');
-  const [selectedMainCategory, setSelectedMainCategory] = useState('photos');
+  const [selectedMainCategory, setSelectedMainCategory] = useState('');
   const [selectedSubcategory, setSelectedSubcategory] = useState('');
   const [error, setError] = useState<string | null>(null);
 
   const handleUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (!file || !selectedSubcategory) return;
+    if (!file || (!selectedSubcategory && selectedMainCategory === 'expo')) return;
 
     try {
       setError(null);
       setUploading(true);
-      await api.uploadPhoto(file, name, selectedSubcategory);
+      // Uploading to API
+      if (selectedMainCategory === 'expo' && selectedSubcategory) {
+        await api.uploadPhoto(file, name, selectedSubcategory); // Expo photos with subcategory
+      } else if (selectedMainCategory === 'photos') {
+        await api.uploadPhoto(file, name, 'lifestyle'); // Lifestyle photos without subcategory
+      }
       onPhotoChange();
       setName('');
       setSelectedSubcategory('');
@@ -108,7 +103,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ photos, onPhotoChange })
                   key={category.id}
                   onClick={() => {
                     setSelectedMainCategory(category.id);
-                    setSelectedSubcategory('');
+                    setSelectedSubcategory(''); // Reset subcategory when switching categories
                   }}
                   className={`px-4 py-2 rounded-lg transition-colors ${
                     selectedMainCategory === category.id
@@ -121,8 +116,8 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ photos, onPhotoChange })
               ))}
             </div>
 
-            {/* Subcategory Selection */}
-            {currentCategory && (
+            {/* Subcategory Selection (only for Exposition category) */}
+            {currentCategory && currentCategory.subcategories && selectedMainCategory === 'expo' && (
               <div className="flex gap-3">
                 {currentCategory.subcategories.map(sub => (
                   <button
@@ -140,6 +135,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ photos, onPhotoChange })
               </div>
             )}
 
+            {/* Input for photo name */}
             <input
               type="text"
               value={name}
@@ -148,6 +144,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ photos, onPhotoChange })
               className="w-full px-4 py-2 bg-gray-700 rounded focus:ring-2 focus:ring-blue-500 outline-none"
             />
 
+            {/* Upload Button */}
             <label className="block">
               <span className="bg-blue-600 px-6 py-3 rounded-lg cursor-pointer hover:bg-blue-700 transition-colors inline-flex items-center gap-2">
                 <Upload className="w-5 h-5" />
@@ -157,15 +154,25 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ photos, onPhotoChange })
                 type="file"
                 accept="image/*,video/*"
                 onChange={handleUpload}
-                disabled={uploading || !selectedSubcategory}
+                disabled={uploading || (selectedMainCategory === 'expo' && !selectedSubcategory)}
                 className="hidden"
               />
             </label>
           </div>
         </div>
 
+        {/* Display the uploaded photos */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {photos.map((photo) => (
+          {photos
+            .filter(photo => 
+              // Display all photos if no category is selected
+              !selectedMainCategory || 
+              // Display photos from the selected category
+              photo.category === selectedMainCategory || 
+              // Also check if subcategory matches for expo category
+              (selectedMainCategory === 'expo' && photo.subcategory === selectedSubcategory)
+            )
+            .map((photo) => (
             <div key={photo.id} className="bg-gray-800 rounded-lg overflow-hidden">
               <img
                 src={photo.url}
