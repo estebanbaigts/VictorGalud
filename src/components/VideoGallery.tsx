@@ -83,27 +83,25 @@ export const VideoGallery: React.FC<VideoGalleryProps> = ({ selectedSubcategory 
     : videos;
 
   return (
-    <section ref={ref} className="bg-black min-h-screen py-20">
-      <div className="container mx-auto px-4">
+    <section ref={ref} className="bg-black min-h-screen py-10">
+      <div className="container mx-auto px-2">
         <h2
-          className={`text-4xl font-bold text-center mb-16 transition-all duration-1000 ${
-            inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-          }`}
+          className={`text-2xl font-semibold text-center mb-8 transition-all duration-1000 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+            }`}
         >
           Vidéographie
         </h2>
 
-        <div className="space-y-24">
+        <div className="space-y-12">
           {filteredVideos.map(video => (
             <div
               key={video.id}
-              className={`transition-all duration-1000 ${
-                inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-              }`}
+              className={`transition-all duration-1000 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+                }`}
             >
-              <div className="bg-gray-900 rounded-lg overflow-hidden shadow-2xl">
+              <div className="rounded-lg overflow-hidden shadow-lg">
                 {/* Video Frame */}
-                <div className="relative pb-[56.25%] h-0">
+                <div className="relative pb-[40%] h-0"> {/* Taille encore réduite */}
                   <iframe
                     src={video.vimeoUrl}
                     className="absolute top-0 left-0 w-full h-full"
@@ -111,24 +109,24 @@ export const VideoGallery: React.FC<VideoGalleryProps> = ({ selectedSubcategory 
                     allowFullScreen
                   ></iframe>
                 </div>
-                
+
                 {/* Video Description */}
-                <div className="p-8">
-                  <h3 className="text-2xl font-bold mb-4 text-white">{video.title}</h3>
-                  <p className="text-gray-300 leading-relaxed">{video.description}</p>
+                <div className="p-4 text-center">
+                  <h3 className="text-lg font-semibold mb-2 text-white">{video.title}</h3> {/* Titre réduit */}
+                  <p className="text-gray-300 text-sm leading-relaxed">{video.description}</p> {/* Texte réduit */}
                 </div>
 
                 {/* Link to Vimeo */}
-                <div className="px-8 pb-8">
+                <div className="px-4 pb-4 text-center">
                   <a
                     href={video.vimeoUrl.replace('player.', '')}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors"
+                    className="inline-flex items-center gap-1 text-blue-300 hover:text-blue-200 transition-colors text-sm"
                   >
                     <span>Voir sur Vimeo</span>
                     <svg
-                      className="w-4 h-4"
+                      className="w-3 h-3"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
