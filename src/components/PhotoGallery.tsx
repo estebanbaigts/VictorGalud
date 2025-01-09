@@ -25,6 +25,17 @@ export const PhotoGallery: React.FC<PhotoGalleryProps> = ({ photos }) => {
     });
   }, [photos]);
 
+  const onNavigate = (direction: 'prev' | 'next') => {
+    if (selectedPhoto) {
+      const currentIndex = photos.findIndex(photo => photo.id === selectedPhoto.id);
+      const nextIndex = direction === 'next'
+        ? (currentIndex + 1) % photos.length
+        : (currentIndex - 1 + photos.length) % photos.length;
+
+      setSelectedPhoto(photos[nextIndex]);
+    }
+  };
+
   return (
     <>
       <section ref={ref} className="container mx-auto px-4 py-16">
@@ -58,7 +69,12 @@ export const PhotoGallery: React.FC<PhotoGalleryProps> = ({ photos }) => {
       </section>
 
       {selectedPhoto && (
-        <PhotoModal photo={selectedPhoto} onClose={() => setSelectedPhoto(null)} />
+        <PhotoModal
+          photo={selectedPhoto}
+          photos={photos}
+          onClose={() => setSelectedPhoto(null)}
+          onNavigate={onNavigate}
+        />
       )}
     </>
   );
