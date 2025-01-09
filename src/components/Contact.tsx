@@ -58,12 +58,6 @@ export const Contact: React.FC = () => {
 
             {/* Contact Information */}
             <div className="lg:pl-12">
-              <div className="max-w-lg">
-                <h2 className="text-4xl font-bold mb-8">Get in Touch</h2>
-                <p className="text-gray-300 mb-12">
-                  Whether you're looking to capture special moments or collaborate on a creative project,
-                  I'm always excited to discuss new opportunities and ideas.
-                </p>
 
                 <div className="space-y-6">
                   <div className="group p-4 bg-white/5 backdrop-blur-sm rounded-lg border border-white/10 hover:bg-white/10 transition-colors duration-300">
@@ -115,7 +109,6 @@ export const Contact: React.FC = () => {
               </div>
             </div>
           </div>
-        </div>
     </section>
   );
 };
