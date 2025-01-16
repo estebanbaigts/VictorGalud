@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Photo } from '../types';
 import { Navigation } from './Navigation';
 import { PhotoGallery } from './PhotoGallery';
@@ -16,13 +16,24 @@ export const Home: React.FC<HomeProps> = ({ photos }) => {
   const [selectedCategory, setSelectedCategory] = useState('photos');
   const [selectedSubcategory, setSelectedSubcategory] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
+  const [currentImage, setCurrentImage] = useState('/vinyle.png');
+  const images = ['/vinyle.png', '/profile.png']; // Remplacez par le chemin de vos images
 
-  React.useEffect(() => {
+  useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImage((prevImage) => 
+        prevImage === images[0] ? images[1] : images[0]
+      );
+    }, 30000); // 30 secondes
+    return () => clearInterval(interval);
   }, []);
 
   const scrollToGallery = () => {
@@ -60,14 +71,14 @@ export const Home: React.FC<HomeProps> = ({ photos }) => {
       <div id="home" className="h-screen flex flex-col items-center justify-center px-4 sm:px-8 md:px-16">
         <div className="flex flex-col items-center justify-center min-h-screen space-y-12 sm:space-y-16 lg:space-y-20">
           <img
-            src="/vinyle.png"
+            src={currentImage}
             alt="Camera"
-            className="w-3/4 sm:w-2/3 md:w-1/2 h-auto animate-spin-slow"
+            className="w-full sm:w-3/4 md:w-2/3 lg:w-1/2 h-auto animate-spin-slow"
           />
 
           <div className="flex gap-4">
             <a
-              href="https://instagram.com"
+              href="https://www.instagram.com/galudboy/"
               target="_blank"
               rel="noopener noreferrer"
               className="text-gray-400 hover:text-white transition-colors transform hover:scale-110 duration-300"
@@ -75,7 +86,7 @@ export const Home: React.FC<HomeProps> = ({ photos }) => {
               <Instagram className="w-6 h-6" />
             </a>
             <a
-              href="https://linkedin.com"
+              href="https://www.linkedin.com/in/victor-galud-68159b113/"
               target="_blank"
               rel="noopener noreferrer"
               className="text-gray-400 hover:text-white transition-colors transform hover:scale-110 duration-300"
@@ -83,7 +94,7 @@ export const Home: React.FC<HomeProps> = ({ photos }) => {
               <Linkedin className="w-6 h-6" />
             </a>
             <a
-              href="https://vimeo.com"
+              href="https://vimeo.com/victorgalud"
               target="_blank"
               rel="noopener noreferrer"
               className="text-gray-400 hover:text-white transition-colors transform hover:scale-110 duration-300"

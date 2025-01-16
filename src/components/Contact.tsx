@@ -27,7 +27,7 @@ export const Contact: React.FC = () => {
                   </p>
                   <div className="flex gap-4 mt-6">
                     <a
-                      href="https://instagram.com"
+                      href="https://www.instagram.com/galudboy/"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-gray-400 hover:text-white transition-colors transform hover:scale-110 duration-300"
@@ -35,7 +35,7 @@ export const Contact: React.FC = () => {
                       <Instagram className="w-5 h-5" />
                     </a>
                     <a
-                      href="https://linkedin.com"
+                      href="https://www.linkedin.com/in/victor-galud-68159b113/"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-gray-400 hover:text-white transition-colors transform hover:scale-110 duration-300"
@@ -43,7 +43,7 @@ export const Contact: React.FC = () => {
                       <Linkedin className="w-5 h-5" />
                     </a>
                     <a
-                      href="https://vimeo.com"
+                      href="https://vimeo.com/victorgalud"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-gray-400 hover:text-white transition-colors transform hover:scale-110 duration-300"

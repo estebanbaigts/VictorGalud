@@ -56,10 +56,6 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ photos, onPhotoChange })
   };
 
   const handleDelete = async (id: string) => {
-    if (!window.confirm('Are you sure you want to delete this photo?')) {
-      return;
-    }
-
     try {
       setError(null);
       await api.deletePhoto(id);
@@ -69,6 +65,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ photos, onPhotoChange })
       console.error('Failed to delete photo:', error);
     }
   };
+
 
   const currentCategory = categories.find(cat => cat.id === selectedMainCategory);
 
@@ -91,10 +88,10 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ photos, onPhotoChange })
             {error}
           </div>
         )}
-        
+
         <div className="bg-gray-800 p-6 rounded-lg mb-8">
           <h2 className="text-2xl font-semibold mb-6">Upload New Content</h2>
-          
+
           <div className="space-y-4">
             {/* Main Category Selection */}
             <div className="flex gap-4">
@@ -105,11 +102,10 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ photos, onPhotoChange })
                     setSelectedMainCategory(category.id);
                     setSelectedSubcategory(''); // Reset subcategory when switching categories
                   }}
-                  className={`px-4 py-2 rounded-lg transition-colors ${
-                    selectedMainCategory === category.id
+                  className={`px-4 py-2 rounded-lg transition-colors ${selectedMainCategory === category.id
                       ? 'bg-blue-600 text-white'
                       : 'bg-gray-700 hover:bg-gray-600'
-                  }`}
+                    }`}
                 >
                   {category.label}
                 </button>
@@ -123,11 +119,10 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ photos, onPhotoChange })
                   <button
                     key={sub.id}
                     onClick={() => setSelectedSubcategory(sub.id)}
-                    className={`px-3 py-1 rounded-full text-sm transition-colors ${
-                      selectedSubcategory === sub.id
+                    className={`px-3 py-1 rounded-full text-sm transition-colors ${selectedSubcategory === sub.id
                         ? 'bg-blue-500 text-white'
                         : 'bg-gray-700 hover:bg-gray-600'
-                    }`}
+                      }`}
                   >
                     {sub.label}
                   </button>
@@ -164,34 +159,34 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ photos, onPhotoChange })
         {/* Display the uploaded photos */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {photos
-            .filter(photo => 
+            .filter(photo =>
               // Display all photos if no category is selected
-              !selectedMainCategory || 
+              !selectedMainCategory ||
               // Display photos from the selected category
-              photo.category === selectedMainCategory || 
+              photo.category === selectedMainCategory ||
               // Also check if subcategory matches for expo category
-              (selectedMainCategory === 'expo' && photo.subcategory === selectedSubcategory)
+              (selectedMainCategory === 'expo' && photo.category === selectedSubcategory)
             )
             .map((photo) => (
-            <div key={photo.id} className="bg-gray-800 rounded-lg overflow-hidden">
-              <img
-                src={photo.url}
-                alt={photo.name}
-                className="w-full h-48 object-cover"
-              />
-              <div className="p-4">
-                <h3 className="font-semibold">{photo.name}</h3>
-                <p className="text-gray-400">{photo.category}</p>
-                <button
-                  onClick={() => handleDelete(photo.id)}
-                  className="mt-2 text-red-500 hover:text-red-400 inline-flex items-center gap-2"
-                >
-                  <Trash2 className="w-4 h-4" />
-                  Delete
-                </button>
+              <div key={photo.id} className="bg-gray-800 rounded-lg overflow-hidden">
+                <img
+                  src={photo.url}
+                  alt={photo.name}
+                  className="w-full h-48 object-cover"
+                />
+                <div className="p-4">
+                  <h3 className="font-semibold">{photo.name}</h3>
+                  <p className="text-gray-400">{photo.category}</p>
+                  <button
+                    onClick={() => handleDelete(photo.id)}
+                    className="mt-2 text-red-500 hover:text-red-400 inline-flex items-center gap-2"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                    Delete
+                  </button>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
         </div>
       </div>
     </div>
