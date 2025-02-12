@@ -28,13 +28,11 @@ const upload = multer({ storage });
 
 app.use(express.json());
 app.use('/uploads', express.static('uploads'));
-app.use(express.static('dist')); // Serve the built files
+app.use(express.static('dist'));
 
-// Store photo metadata
 let photos = [];
 const PHOTOS_FILE = join(__dirname, 'photos.json');
 
-// Load existing photos data
 try {
   if (fs.existsSync(PHOTOS_FILE)) {
     photos = JSON.parse(fs.readFileSync(PHOTOS_FILE, 'utf8'));
@@ -50,6 +48,7 @@ const savePhotos = () => {
 
 // API Routes
 app.get('/api/photos', (req, res) => {
+  console.log("Photos envoyées:", photos);
   res.json(photos);
 });
 

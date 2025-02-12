@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { useInView } from 'react-intersection-observer';
+import React, { useState } from 'react';
 import { Photo } from '../types';
 import { PhotoModal } from './PhotoModal';
 
@@ -8,45 +7,70 @@ interface PhotoGalleryProps {
 }
 
 export const PhotoGallery: React.FC<PhotoGalleryProps> = ({ photos }) => {
+  const [filter, setFilter] = useState<'lifestyle' | 'exposition' | 'video'>('lifestyle');
+  const [selectedExpo, setSelectedExpo] = useState<'odorat' | 'monde' | null>(null);
   const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
-  const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set());
-  const { ref, inView } = useInView({
-    threshold: 0.1,
-    triggerOnce: true
+
+  // 🔥 Filtrage des photos selon la catégorie sélectionnée
+  const filteredPhotos = photos.filter(photo => {
+    if (filter === 'lifestyle') return photo.category === 'lifestyle';
+    if (filter === 'video') return photo.category === 'video';
+    if (filter === 'exposition' && selectedExpo) return photo.category === selectedExpo;
+    return false;
   });
-
-  useEffect(() => {
-    photos.forEach(photo => {
-      const img = new Image();
-      img.src = photo.url;
-      img.onload = () => {
-        setLoadedImages(prev => new Set(prev).add(photo.id));
-      };
-    });
-  }, [photos]);
-
-  const onNavigate = (direction: 'prev' | 'next') => {
-    if (selectedPhoto) {
-      const currentIndex = photos.findIndex(photo => photo.id === selectedPhoto.id);
-      const nextIndex = direction === 'next'
-        ? (currentIndex + 1) % photos.length
-        : (currentIndex - 1 + photos.length) % photos.length;
-
-      setSelectedPhoto(photos[nextIndex]);
-    }
-  };
 
   return (
     <>
-      <section ref={ref} className="container mx-auto px-4 py-16">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {photos.map((photo) => {
-            const isLoaded = loadedImages.has(photo.id);
+      {/* 🔥 Boutons Glassmorphism */}
+      <div className="flex justify-center gap-4 mb-6">
+        <button
+          onClick={() => { setFilter('lifestyle'); setSelectedExpo(null); }}
+          className={`glass-button ${filter === 'lifestyle' ? 'active' : ''}`}
+        >
+          Lifestyle
+        </button>
 
-            return (
+        <div className="relative">
+          <button
+            onClick={() => setFilter('exposition')}
+            className={`glass-button ${filter === 'exposition' ? 'active' : ''}`}
+          >
+            Expositions
+          </button>
+          {filter === 'exposition' && (
+            <div className="absolute left-0 mt-2 w-48 bg-white/10 backdrop-blur-lg border border-white/20 rounded-lg shadow-lg p-2">
+              <button
+                onClick={() => setSelectedExpo('odorat')}
+                className={`dropdown-item ${selectedExpo === 'odorat' ? 'active' : ''}`}
+              >
+                Un regard vers l'odorat
+              </button>
+              <button
+                onClick={() => setSelectedExpo('monde')}
+                className={`dropdown-item ${selectedExpo === 'monde' ? 'active' : ''}`}
+              >
+                Around the world portrait
+              </button>
+            </div>
+          )}
+        </div>
+
+        <button
+          onClick={() => { setFilter('video'); setSelectedExpo(null); }}
+          className={`glass-button ${filter === 'video' ? 'active' : ''}`}
+        >
+          Vidéos
+        </button>
+      </div>
+
+      {/* 🔥 Affichage des photos filtrées */}
+      <section className="container mx-auto px-4 py-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {filteredPhotos.length > 0 ? (
+            filteredPhotos.map((photo) => (
               <div
                 key={photo.id}
-                className={`aspect-[4/3] group cursor-pointer ${isLoaded ? 'fade-slide-up' : 'opacity-0'}`}
+                className="aspect-[4/3] group cursor-pointer"
                 onClick={() => setSelectedPhoto(photo)}
               >
                 <div className="relative h-full w-full overflow-hidden rounded-lg bg-gray-900">
@@ -63,17 +87,18 @@ export const PhotoGallery: React.FC<PhotoGalleryProps> = ({ photos }) => {
                   </div>
                 </div>
               </div>
-            );
-          })}
+            ))
+          ) : (
+            <p className="text-center text-gray-400 col-span-full">Aucune image trouvée pour cette catégorie.</p>
+          )}
         </div>
       </section>
 
       {selectedPhoto && (
         <PhotoModal
           photo={selectedPhoto}
-          photos={photos}
+          photos={filteredPhotos}
           onClose={() => setSelectedPhoto(null)}
-          onNavigate={onNavigate}
         />
       )}
     </>

@@ -5,7 +5,7 @@ import { PhotoGallery } from './PhotoGallery';
 import { VideoGallery } from './VideoGallery';
 import { CategoryFilter } from './CategoryFilter';
 import { Contact } from './Contact';
-import { Instagram, Linkedin, Video } from 'lucide-react';
+import { Instagram, Linkedin, Video, Phone } from 'lucide-react';
 
 interface HomeProps {
   photos: Photo[];
@@ -56,7 +56,7 @@ export const Home: React.FC<HomeProps> = ({ photos }) => {
 
   return (
     <div className="min-h-screen bg-black text-white">
-      <Navigation isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} scrolled={scrolled} />
+      {/* <Navigation isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} scrolled={scrolled} /> */}
 
       <div id="home" className="h-screen flex flex-col items-center justify-center px-4 sm:px-8 md:px-16">
         <div className="flex flex-col items-center justify-center min-h-screen space-y-12 sm:space-y-16 lg:space-y-20">
@@ -90,6 +90,14 @@ export const Home: React.FC<HomeProps> = ({ photos }) => {
               className="text-gray-400 hover:text-white transition-colors transform hover:scale-110 duration-300"
             >
               <Video className="w-6 h-6" />
+              </a>
+              <a
+              href="https://vimeo.com/victorgalud"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-400 hover:text-white transition-colors transform hover:scale-110 duration-300"
+            >
+              <Phone className="w-6 h-6" />
             </a>
           </div>
 
@@ -113,15 +121,15 @@ export const Home: React.FC<HomeProps> = ({ photos }) => {
       </div>
 
       <div id="gallery" className="min-h-screen">
-        <CategoryFilter
+        {/* <CategoryFilter
           selectedCategory={selectedCategory}
           selectedSubcategory={selectedSubcategory}
           onCategoryChange={handleCategoryChange}
-        />
+        /> */}
         {renderContent()}
       </div>
 
-      <Contact />
+      {/* <Contact /> */}
     </div>
   );
 };

@@ -67,3 +67,22 @@
   backdrop-filter: blur(8px);
   background: rgba(0, 0, 0, 0.3);
 }
+
+@layer utilities {
+  .glass-button {
+    @apply px-6 py-2 text-white rounded-lg bg-white/10 backdrop-blur-md border border-white/20 
+    transition-all duration-300 hover:bg-white/20 hover:shadow-lg hover:scale-105;
+  }
+
+  .glass-button.active {
+    @apply bg-white/20 border-white/40 scale-105 shadow-xl;
+  }
+
+  .dropdown-item {
+    @apply w-full px-4 py-2 text-left text-white bg-transparent hover:bg-white/20 rounded-lg transition-all;
+  }
+
+  .dropdown-item.active {
+    @apply bg-white/30;
+  }
+}
