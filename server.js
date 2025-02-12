@@ -11,7 +11,6 @@ const __dirname = dirname(__filename);
 const app = express();
 const port = 3000;
 
-// Configure multer for file uploads
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     const uploadDir = join(__dirname, 'uploads');
