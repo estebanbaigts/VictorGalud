@@ -5,3 +5,11 @@ export interface Photo {
   filename: string;
   category: string;
 }
+
+export interface Video {
+  id: string;
+  title: string;
+  description: string;
+  vimeoUrl: string;
+  category: string;
+}

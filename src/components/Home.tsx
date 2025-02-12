@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Photo } from '../types';
-import { Navigation } from './Navigation';
+// import { Navigation } from './Navigation';
 import { PhotoGallery } from './PhotoGallery';
 import { VideoGallery } from './VideoGallery';
-import { CategoryFilter } from './CategoryFilter';
-import { Contact } from './Contact';
+// import { CategoryFilter } from './CategoryFilter';
+// import { Contact } from './Contact';
 import { Instagram, Linkedin, Video, Phone } from 'lucide-react';
 
 interface HomeProps {
