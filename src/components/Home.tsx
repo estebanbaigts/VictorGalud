@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { Photo } from '../types';
-// import { Navigation } from './Navigation';
 import { PhotoGallery } from './PhotoGallery';
 import { VideoGallery } from './VideoGallery';
+import { Footer } from './Footer';
+import { Instagram, Linkedin, Video, Phone } from 'lucide-react';
+// import { Navigation } from './Navigation';
 // import { CategoryFilter } from './CategoryFilter';
 // import { Contact } from './Contact';
-import { Instagram, Linkedin, Video, Phone } from 'lucide-react';
 
 interface HomeProps {
   photos: Photo[];
 }
 
 export const Home: React.FC<HomeProps> = ({ photos }) => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  // const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('photos');
   const [selectedSubcategory, setSelectedSubcategory] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
@@ -130,6 +131,7 @@ export const Home: React.FC<HomeProps> = ({ photos }) => {
       </div>
 
       {/* <Contact /> */}
+      <Footer />
     </div>
   );
 };
