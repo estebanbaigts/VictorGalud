@@ -16,8 +16,7 @@ export const Home: React.FC<HomeProps> = ({ photos }) => {
   const [selectedCategory, setSelectedCategory] = useState('photos');
   const [selectedSubcategory, setSelectedSubcategory] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
-  const [currentImage, setCurrentImage] = useState('/vinyle.png');
-  const images = ['/vinyle.png', '/profile.png']; // Remplacez par le chemin de vos images
+  const [currentImage] = useState('/profile.png');
 
   useEffect(() => {
     const handleScroll = () => {
@@ -25,15 +24,6 @@ export const Home: React.FC<HomeProps> = ({ photos }) => {
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentImage((prevImage) => 
-        prevImage === images[0] ? images[1] : images[0]
-      );
-    }, 30000); // 30 secondes
-    return () => clearInterval(interval);
   }, []);
 
   const scrollToGallery = () => {

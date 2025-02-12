@@ -1,5 +1,5 @@
 import React from 'react';
-import { Camera, Menu, X } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 
 interface NavigationProps {
   isMenuOpen: boolean;
