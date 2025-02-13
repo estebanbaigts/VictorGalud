@@ -9,8 +9,9 @@ interface GalleryProps {
 }
 
 export const PhotoGallery: React.FC<GalleryProps> = ({ photos }) => {
-  const [filter, setFilter] = useState<'lifestyle' | 'exposition' | 'video' | null>(null);
+  const [filter, setFilter] = useState<'lifestyle' | 'exposition' | 'video' | 'artist' | 'capture' | null>(null);
   const [selectedExpo, setSelectedExpo] = useState<'odorat' | 'monde' | 'voyage' | 'paris' | null>(null);
+  const [selectedCapture, setSelectedCapture] = useState<'fefe-drink' | 'stage' | 'interbev-bts' | 'worlds' | 'skate' | null>(null);
   const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
 
   const expoCategories: Array<'odorat' | 'monde' | 'paris' | 'voyage'> = [
@@ -19,6 +20,14 @@ export const PhotoGallery: React.FC<GalleryProps> = ({ photos }) => {
     'voyage',
     'paris',
   ];
+  const captureCategories: Array<'fefe-drink' | 'stage' | 'interbev-bts' | 'worlds' | 'skate'> = [
+    'fefe-drink',
+    'stage',
+    'interbev-bts',
+    'worlds',
+    'skate',
+  ];
+
   const expoCovers = expoCategories.map(category => {
     const cover = photos.find(photo => photo.category === category);
     return {
@@ -27,6 +36,16 @@ export const PhotoGallery: React.FC<GalleryProps> = ({ photos }) => {
       title: getExpoTitle(category),
     };
   });
+
+  const captureCovers = captureCategories.map(category => {
+    const cover = photos.find(photo => photo.category === category);
+    return {
+      category,
+      coverUrl: cover ? cover.url : '',
+      title: getCaptureTitle(category),
+    };
+  });
+
   function getExpoTitle(category: 'odorat' | 'monde' | 'paris' | 'voyage'): string {
     switch (category) {
       case 'odorat':
@@ -42,6 +61,23 @@ export const PhotoGallery: React.FC<GalleryProps> = ({ photos }) => {
     }
   }
 
+  function getCaptureTitle(category: 'fefe-drink' | 'stage' | 'interbev-bts' | 'worlds' | 'skate'): string {
+    switch (category) {
+      case 'fefe-drink':
+        return "Fefe Drink";
+      case 'stage':
+        return "Stage";
+      case 'interbev-bts':
+        return "Interbev BTS";
+      case 'worlds':
+        return "Worlds";
+      case 'skate':
+        return "Skate";
+      default:
+        return "";
+    }
+  }
+
   const mainCovers = {
     lifestyle: {
       coverUrl: photos.find(photo => photo.category === 'lifestyle')?.url || '',
@@ -52,8 +88,16 @@ export const PhotoGallery: React.FC<GalleryProps> = ({ photos }) => {
       title: "Expositions"
     },
     video: {
-      coverUrl: '',
+      coverUrl: 'couv.png',
       title: "Movies"
+    },
+    artist: {
+      coverUrl: photos.find(photo => photo.category === 'artist')?.url || '',
+      title: "Artist"
+    },
+    capture: {
+      coverUrl: captureCovers[0].coverUrl || '',
+      title: "Capture"
     }
   };
 
@@ -62,6 +106,8 @@ export const PhotoGallery: React.FC<GalleryProps> = ({ photos }) => {
     filteredPhotos = photos.filter(photo => photo.category === 'lifestyle');
   } else if (filter === 'exposition' && selectedExpo) {
     filteredPhotos = photos.filter(photo => photo.category === selectedExpo);
+  } else if (filter === 'capture' && selectedCapture) {
+    filteredPhotos = photos.filter(photo => photo.category === selectedCapture);
   }
 
   const breakpointColumnsObj = {
@@ -73,10 +119,10 @@ export const PhotoGallery: React.FC<GalleryProps> = ({ photos }) => {
   if (!filter) {
     return (
       <section className="container mx-auto px-4 py-16">
-        <div className="flex flex-col sm:flex-col gap-4">
-          {(['lifestyle', 'exposition', 'video'] as const).map(main => (
+        <div className="flex flex-col gap-4">
+          {(['lifestyle', 'exposition', 'video', 'artist', 'capture'] as const).map(main => (
             <div key={main} className="cursor-pointer" onClick={() => setFilter(main)}>
-              <div className="overflow-hidden rounded-lg bg-gray-900 h-64">
+              <div className="overflow-hidden rounded-lg bg-gray-900 h-64 w-full">
                 {mainCovers[main].coverUrl ? (
                   <img
                     src={mainCovers[main].coverUrl}
@@ -118,6 +164,7 @@ export const PhotoGallery: React.FC<GalleryProps> = ({ photos }) => {
         onClick={() => {
           setFilter(null);
           setSelectedExpo(null);
+          setSelectedCapture(null);
         }}
         label="Retour aux catégories"
       />
@@ -126,14 +173,14 @@ export const PhotoGallery: React.FC<GalleryProps> = ({ photos }) => {
         <VideoGallery selectedSubcategory={null} />
       ) : filter === 'exposition' && selectedExpo === null ? (
         <section className="container mx-auto px-4 py-16">
-          <div className="grid grid-cols-1 sm:grid-cols-1 gap-4">
+          <div className="flex flex-col gap-4">
             {expoCovers.map(expo => (
               <div
                 key={expo.category}
                 className="cursor-pointer"
                 onClick={() => setSelectedExpo(expo.category)}
               >
-                <div className="overflow-hidden rounded-lg bg-gray-900 h-64">
+                <div className="overflow-hidden rounded-lg bg-gray-900 h-64 w-full">
                   {expo.coverUrl ? (
                     <img
                       src={expo.coverUrl}
@@ -151,10 +198,40 @@ export const PhotoGallery: React.FC<GalleryProps> = ({ photos }) => {
             ))}
           </div>
         </section>
+      ) : filter === 'capture' && selectedCapture === null ? (
+        <section className="container mx-auto px-4 py-16">
+          <div className="flex flex-col gap-4">
+            {captureCovers.map(capture => (
+              <div
+                key={capture.category}
+                className="cursor-pointer"
+                onClick={() => setSelectedCapture(capture.category)}
+              >
+                <div className="overflow-hidden rounded-lg bg-gray-900 h-64 w-full">
+                  {capture.coverUrl ? (
+                    <img
+                      src={capture.coverUrl}
+                      alt={capture.title}
+                      className="w-full h-full object-cover transition-transform duration-500 ease-in-out hover:scale-110"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-gray-700 flex items-center justify-center">
+                      <span className="text-white text-lg">{capture.title}</span>
+                    </div>
+                  )}
+                </div>
+                <p className="text-center mt-2 text-white text-sm">{capture.title}</p>
+              </div>
+            ))}
+          </div>
+        </section>
       ) : (
         <section className="container mx-auto px-4 py-16">
           {filter === 'exposition' && selectedExpo && (
             <BackButton onClick={() => setSelectedExpo(null)} label="Retour aux expositions" />
+          )}
+          {filter === 'capture' && selectedCapture && (
+            <BackButton onClick={() => setSelectedCapture(null)} label="Retour aux captures" />
           )}
           <Masonry
             breakpointCols={breakpointColumnsObj}

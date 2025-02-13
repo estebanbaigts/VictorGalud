@@ -17,6 +17,7 @@ const videos: Video[] = [
     vimeoUrl: 'https://player.vimeo.com/video/394407152',
     category: 'documentary',
   },
+  
   {
     id: '2',
     title: 'HARIF GUZMAN AT GROUND EFFECT',
@@ -26,9 +27,9 @@ const videos: Video[] = [
   },
   {
     id: '3',
-    title: 'LIV BRANDBERG BY VICTOR GALUD',
-    description: `Liv Brandberg making a piece in her workshop in Pantin.`,
-    vimeoUrl: 'https://www.youtube.com/watch?v=IemaCpEZcfs',
+    title: 'LLORCA ET WALLACE PAR VICTOR',
+    description: `Portrait de mon ami poète Philippe Llorca, interprété par Wallace. Projeté pendant le vernissage de l'exposition poétique de Philippe en symbiose avec les films d'Hugo Dos Santos.`,
+    vimeoUrl: 'https://player.vimeo.com/video/824723057',
     category: 'documentary',
   },
   {
@@ -68,9 +69,9 @@ const videos: Video[] = [
   },
   {
     id: '9',
-    title: 'LLORCA ET WALLACE PAR VICTOR',
-    description: `Portrait de mon ami poète Philippe Llorca, interprété par Wallace. Projeté pendant le vernissage de l'exposition poétique de Philippe en symbiose avec les films d'Hugo Dos Santos.`,
-    vimeoUrl: 'https://player.vimeo.com/video/824723057',
+    title: 'LIV BRANDBERG BY VICTOR GALUD',
+    description: `Liv Brandberg making a piece in her workshop in Pantin.`,
+    vimeoUrl: 'https://www.youtube.com/watch?v=IemaCpEZcfs',
     category: 'documentary',
   },
 ];
