@@ -140,12 +140,5 @@
   .glass-button.active {
     @apply bg-white/20 border-white/40 scale-105 shadow-xl;
   }
-
-  .sub-tab {
-    @apply px-4 py-2 text-white bg-white/10 rounded-md border border-white/20 backdrop-blur-md transition-all duration-300 hover:bg-white/20 hover:scale-105;
-  }
-
-  .sub-tab.active {
-    @apply bg-white/20 border-white/40 scale-105 shadow-lg;
-  }
 }
+

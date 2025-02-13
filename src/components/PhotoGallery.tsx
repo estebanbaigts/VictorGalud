@@ -9,15 +9,21 @@ interface GalleryProps {
 }
 
 export const PhotoGallery: React.FC<GalleryProps> = ({ photos }) => {
+  // Filtre principal : "lifestyle", "exposition" ou "video"
   const [filter, setFilter] = useState<'lifestyle' | 'exposition' | 'video'>('lifestyle');
+  // Pour "Expositions", la sous-catégorie sélectionnée (null = pas encore choisi)
   const [selectedExpo, setSelectedExpo] = useState<'odorat' | 'monde' | 'voyage' | 'paris' | null>(null);
+  // Photo sélectionnée pour le modal
   const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
 
-  const filteredPhotos = photos.filter(photo => {
-    if (filter === 'lifestyle') return photo.category === 'lifestyle';
-    if (filter === 'exposition' && selectedExpo) return photo.category === selectedExpo;
-    return false;
-  });
+  // Filtrer les photos selon le filtre principal
+  let filteredPhotos: Photo[] = [];
+  if (filter === 'lifestyle') {
+    filteredPhotos = photos.filter(photo => photo.category === 'lifestyle');
+  } else if (filter === 'exposition' && selectedExpo) {
+    filteredPhotos = photos.filter(photo => photo.category === selectedExpo);
+  }
+  // Le cas "video" est géré par le composant VideoGallery.
 
   // Breakpoints pour le layout Masonry
   const breakpointColumnsObj = {
@@ -26,67 +32,119 @@ export const PhotoGallery: React.FC<GalleryProps> = ({ photos }) => {
     640: 1,
   };
 
+  // Liste des sous-catégories pour Expositions
+  const expoCategories: Array<'odorat' | 'monde' | 'paris' | 'voyage'> = [
+    'odorat',
+    'monde',
+    'paris',
+    'voyage',
+  ];
+
+  // Pour chaque sous-catégorie, on recherche le premier élément comme "cover"
+  const expoCovers = expoCategories.map(category => {
+    const cover = photos.find(photo => photo.category === category);
+    return {
+      category,
+      coverUrl: cover ? cover.url : '',
+      title: getExpoTitle(category),
+    };
+  });
+
+  // Fonction utilitaire pour retourner un titre lisible pour chaque expo
+  function getExpoTitle(category: 'odorat' | 'monde' | 'paris' | 'voyage'): string {
+    switch (category) {
+      case 'odorat':
+        return "Un regard vers l'odorat";
+      case 'monde':
+        return "Around the world portrait";
+      case 'paris':
+        return "Parisiens";
+      case 'voyage':
+        return "Plage argentique";
+      default:
+        return "";
+    }
+  }
+
   return (
     <>
       {/* Onglets principaux */}
       <div className="flex justify-center gap-4 mb-6">
         <button
-          onClick={() => { setFilter('lifestyle'); setSelectedExpo(null); }}
+          onClick={() => {
+            setFilter('lifestyle');
+            setSelectedExpo(null);
+          }}
           className={`glass-button ${filter === 'lifestyle' ? 'active' : ''}`}
         >
           Lifestyle
         </button>
 
         <button
-          onClick={() => { setFilter('exposition'); setSelectedExpo(null); }}
+          onClick={() => {
+            setFilter('exposition');
+            setSelectedExpo(null);
+          }}
           className={`glass-button ${filter === 'exposition' ? 'active' : ''}`}
         >
           Expositions
         </button>
 
         <button
-          onClick={() => { setFilter('video'); setSelectedExpo(null); }}
+          onClick={() => {
+            setFilter('video');
+            setSelectedExpo(null);
+          }}
           className={`glass-button ${filter === 'video' ? 'active' : ''}`}
         >
           Vidéos
         </button>
       </div>
 
-      {/* Sous-onglets pour Expositions affichés horizontalement */}
-      {filter === 'exposition' && (
-        <div className="flex gap-3 mb-6 overflow-x-auto whitespace-nowrap px-4">
-          <button
-            onClick={() => setSelectedExpo('odorat')}
-            className={`sub-tab ${selectedExpo === 'odorat' ? 'active' : ''}`}
-          >
-            Un regard vers l'odorat
-          </button>
-          <button
-            onClick={() => setSelectedExpo('monde')}
-            className={`sub-tab ${selectedExpo === 'monde' ? 'active' : ''}`}
-          >
-            Around the world portrait
-          </button>
-          <button
-            onClick={() => setSelectedExpo('paris')}
-            className={`sub-tab ${selectedExpo === 'paris' ? 'active' : ''}`}
-          >
-            Parisiens
-          </button>
-          <button
-            onClick={() => setSelectedExpo('voyage')}
-            className={`sub-tab ${selectedExpo === 'voyage' ? 'active' : ''}`}
-          >
-            Plage argentique
-          </button>
-        </div>
-      )}
-
-      {/* Affichage conditionnel */}
-      {filter === 'video' ? (
+      {/* Pour Expositions : affichage des covers si aucune sous-catégorie n'est sélectionnée */}
+      {filter === 'exposition' && selectedExpo === null ? (
+        <section className="container mx-auto px-4 py-16">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            {expoCovers.map(expo => (
+              <div
+                key={expo.category}
+                className="cursor-pointer"
+                onClick={() => setSelectedExpo(expo.category)}
+              >
+                <div className="overflow-hidden rounded-lg bg-gray-900 h-48">
+                  {expo.coverUrl ? (
+                    <img
+                      src={expo.coverUrl}
+                      alt={expo.title}
+                      className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-gray-700 flex items-center justify-center">
+                      <span className="text-white">{expo.title}</span>
+                    </div>
+                  )}
+                </div>
+                <p className="text-center mt-2 text-white">{expo.title}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      ) : filter === 'video' ? (
+        // Affichage de la vidéothèque
         <VideoGallery selectedSubcategory={null} />
       ) : (
+        // Affichage de la grille de photos pour Lifestyle ou Exposition (avec sous-catégorie sélectionnée)
         <section className="container mx-auto px-4 py-16">
+          {filter === 'exposition' && selectedExpo && (
+            <div className="mb-4">
+              <button
+                onClick={() => setSelectedExpo(null)}
+                className="text-blue-500 underline"
+              >
+                Retour aux expositions
+              </button>
+            </div>
+          )}
           <Masonry
             breakpointCols={breakpointColumnsObj}
             className="flex gap-4"
