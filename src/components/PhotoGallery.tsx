@@ -19,9 +19,10 @@ export const PhotoGallery: React.FC<GalleryProps> = ({ photos }) => {
     return false;
   });
 
+  // Breakpoints pour le layout Masonry
   const breakpointColumnsObj = {
-    default: 2,
-    1024: 1,
+    default: 3,
+    1024: 2,
     640: 1,
   };
 
@@ -51,9 +52,9 @@ export const PhotoGallery: React.FC<GalleryProps> = ({ photos }) => {
         </button>
       </div>
 
-      {/* Sous-onglets pour "Expositions" affichés horizontalement */}
+      {/* Sous-onglets pour Expositions affichés horizontalement */}
       {filter === 'exposition' && (
-        <div className="flex justify-center gap-3 mb-6">
+        <div className="flex gap-3 mb-6 overflow-x-auto whitespace-nowrap px-4">
           <button
             onClick={() => setSelectedExpo('odorat')}
             className={`sub-tab ${selectedExpo === 'odorat' ? 'active' : ''}`}
@@ -83,10 +84,8 @@ export const PhotoGallery: React.FC<GalleryProps> = ({ photos }) => {
 
       {/* Affichage conditionnel */}
       {filter === 'video' ? (
-        // Affichage de la vidéothèque
         <VideoGallery selectedSubcategory={null} />
       ) : (
-        // Affichage des photos en mode Masonry pour Lifestyle et Expositions
         <section className="container mx-auto px-4 py-16">
           <Masonry
             breakpointCols={breakpointColumnsObj}
@@ -118,7 +117,6 @@ export const PhotoGallery: React.FC<GalleryProps> = ({ photos }) => {
         </section>
       )}
 
-      {/* Modal d'affichage de la photo */}
       {selectedPhoto && filter !== 'video' && (
         <PhotoModal
           photo={selectedPhoto}
