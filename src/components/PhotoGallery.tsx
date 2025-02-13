@@ -34,7 +34,7 @@ export const PhotoGallery: React.FC<GalleryProps> = ({ photos }) => {
       case 'monde':
         return "Around the world portrait";
       case 'paris':
-        return "Parisiens";
+        return "Hiver parisien";
       case 'voyage':
         return "Plage argentique";
       default:
@@ -73,7 +73,7 @@ export const PhotoGallery: React.FC<GalleryProps> = ({ photos }) => {
   if (!filter) {
     return (
       <section className="container mx-auto px-4 py-16">
-        <div className="grid grid-cols-1 sm:grid-cols-1 gap-4">
+        <div className="flex flex-col sm:flex-col gap-4">
           {(['lifestyle', 'exposition', 'video'] as const).map(main => (
             <div key={main} className="cursor-pointer" onClick={() => setFilter(main)}>
               <div className="overflow-hidden rounded-lg bg-gray-900 h-64">
@@ -101,9 +101,9 @@ export const PhotoGallery: React.FC<GalleryProps> = ({ photos }) => {
     <div className="container mx-auto px-4 py-4">
       <button
         onClick={onClick}
-        className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700 transition"
+        className="flex items-center gap-2 px-4 py-2 bg-black text-white rounded-full shadow-lg hover:bg-blue-700 transition"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="white">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
         </svg>
         <span>{label}</span>
