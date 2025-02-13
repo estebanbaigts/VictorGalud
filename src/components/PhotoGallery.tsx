@@ -9,38 +9,20 @@ interface GalleryProps {
 }
 
 export const PhotoGallery: React.FC<GalleryProps> = ({ photos }) => {
-  // Filtre principal : "lifestyle", "exposition" ou "video"
-  const [filter, setFilter] = useState<'lifestyle' | 'exposition' | 'video'>('lifestyle');
-  // Pour "Expositions", la sous-catégorie sélectionnée (null = pas encore choisi)
+  // L'état "filter" est maintenant nul au départ pour afficher les covers principales.
+  const [filter, setFilter] = useState<'lifestyle' | 'exposition' | 'video' | null>(null);
+  // Pour Expositions, la sous-catégorie sélectionnée (null = non sélectionnée)
   const [selectedExpo, setSelectedExpo] = useState<'odorat' | 'monde' | 'voyage' | 'paris' | null>(null);
-  // Photo sélectionnée pour le modal
+  // Photo sélectionnée pour l'affichage en modal
   const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
 
-  // Filtrer les photos selon le filtre principal
-  let filteredPhotos: Photo[] = [];
-  if (filter === 'lifestyle') {
-    filteredPhotos = photos.filter(photo => photo.category === 'lifestyle');
-  } else if (filter === 'exposition' && selectedExpo) {
-    filteredPhotos = photos.filter(photo => photo.category === selectedExpo);
-  }
-  // Le cas "video" est géré par le composant VideoGallery.
-
-  // Breakpoints pour le layout Masonry
-  const breakpointColumnsObj = {
-    default: 3,
-    1024: 2,
-    640: 1,
-  };
-
-  // Liste des sous-catégories pour Expositions
+  // Pour obtenir les covers de sous-catégories d'expositions
   const expoCategories: Array<'odorat' | 'monde' | 'paris' | 'voyage'> = [
     'odorat',
     'monde',
     'paris',
     'voyage',
   ];
-
-  // Pour chaque sous-catégorie, on recherche le premier élément comme "cover"
   const expoCovers = expoCategories.map(category => {
     const cover = photos.find(photo => photo.category === category);
     return {
@@ -49,8 +31,6 @@ export const PhotoGallery: React.FC<GalleryProps> = ({ photos }) => {
       title: getExpoTitle(category),
     };
   });
-
-  // Fonction utilitaire pour retourner un titre lisible pour chaque expo
   function getExpoTitle(category: 'odorat' | 'monde' | 'paris' | 'voyage'): string {
     switch (category) {
       case 'odorat':
@@ -66,43 +46,86 @@ export const PhotoGallery: React.FC<GalleryProps> = ({ photos }) => {
     }
   }
 
+  // Déterminer la cover principale pour chaque catégorie
+  const mainCovers = {
+    lifestyle: {
+      coverUrl: photos.find(photo => photo.category === 'lifestyle')?.url || '',
+      title: "Lifestyle"
+    },
+    exposition: {
+      // Pour Expositions, on prend la cover de la première sous-catégorie (ici odorat) comme représentation
+      coverUrl: expoCovers[0].coverUrl || '',
+      title: "Expositions"
+    },
+    video: {
+      coverUrl: '', // Si aucune image n'est disponible pour la vidéo, un placeholder sera affiché.
+      title: "Vidéos"
+    }
+  };
+
+  // Filtrer les photos pour l'affichage du contenu
+  let filteredPhotos: Photo[] = [];
+  if (filter === 'lifestyle') {
+    filteredPhotos = photos.filter(photo => photo.category === 'lifestyle');
+  } else if (filter === 'exposition' && selectedExpo) {
+    filteredPhotos = photos.filter(photo => photo.category === selectedExpo);
+  }
+  // Le cas "video" est géré par le composant VideoGallery.
+
+  // Breakpoints pour le layout Masonry
+  const breakpointColumnsObj = {
+    default: 3,
+    1024: 2,
+    640: 1,
+  };
+
+  // Si aucune catégorie n'est sélectionnée, afficher les covers principales
+  if (!filter) {
+    return (
+      <section className="container mx-auto px-4 py-16">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          {(['lifestyle', 'exposition', 'video'] as const).map(main => (
+            <div key={main} className="cursor-pointer" onClick={() => setFilter(main)}>
+              <div className="overflow-hidden rounded-lg bg-gray-900 h-48">
+                {mainCovers[main].coverUrl ? (
+                  <img
+                    src={mainCovers[main].coverUrl}
+                    alt={mainCovers[main].title}
+                    className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gray-700 flex items-center justify-center">
+                    <span className="text-white text-xl">{mainCovers[main].title}</span>
+                  </div>
+                )}
+              </div>
+              <p className="text-center mt-2 text-white text-lg">{mainCovers[main].title}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+    );
+  }
+
+  // Une fois qu'une catégorie principale est sélectionnée, on affiche un bouton de retour.
   return (
     <>
-      {/* Onglets principaux */}
-      <div className="flex justify-center gap-4 mb-6">
+      <div className="container mx-auto px-4 py-4">
         <button
           onClick={() => {
-            setFilter('lifestyle');
+            setFilter(null);
             setSelectedExpo(null);
           }}
-          className={`glass-button ${filter === 'lifestyle' ? 'active' : ''}`}
+          className="text-blue-500 underline"
         >
-          Lifestyle
-        </button>
-
-        <button
-          onClick={() => {
-            setFilter('exposition');
-            setSelectedExpo(null);
-          }}
-          className={`glass-button ${filter === 'exposition' ? 'active' : ''}`}
-        >
-          Expositions
-        </button>
-
-        <button
-          onClick={() => {
-            setFilter('video');
-            setSelectedExpo(null);
-          }}
-          className={`glass-button ${filter === 'video' ? 'active' : ''}`}
-        >
-          Vidéos
+          Retour aux catégories
         </button>
       </div>
 
-      {/* Pour Expositions : affichage des covers si aucune sous-catégorie n'est sélectionnée */}
-      {filter === 'exposition' && selectedExpo === null ? (
+      {filter === 'video' ? (
+        <VideoGallery selectedSubcategory={null} />
+      ) : filter === 'exposition' && selectedExpo === null ? (
+        // Pour Expositions, si aucune sous-catégorie n'est choisie, afficher les 4 covers des expos
         <section className="container mx-auto px-4 py-16">
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {expoCovers.map(expo => (
@@ -120,20 +143,17 @@ export const PhotoGallery: React.FC<GalleryProps> = ({ photos }) => {
                     />
                   ) : (
                     <div className="w-full h-full bg-gray-700 flex items-center justify-center">
-                      <span className="text-white">{expo.title}</span>
+                      <span className="text-white text-sm">{expo.title}</span>
                     </div>
                   )}
                 </div>
-                <p className="text-center mt-2 text-white">{expo.title}</p>
+                <p className="text-center mt-2 text-white text-sm">{expo.title}</p>
               </div>
             ))}
           </div>
         </section>
-      ) : filter === 'video' ? (
-        // Affichage de la vidéothèque
-        <VideoGallery selectedSubcategory={null} />
       ) : (
-        // Affichage de la grille de photos pour Lifestyle ou Exposition (avec sous-catégorie sélectionnée)
+        // Pour Lifestyle ou pour Expositions avec une sous-catégorie sélectionnée
         <section className="container mx-auto px-4 py-16">
           {filter === 'exposition' && selectedExpo && (
             <div className="mb-4">
