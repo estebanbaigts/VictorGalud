@@ -9,19 +9,15 @@ interface GalleryProps {
 }
 
 export const PhotoGallery: React.FC<GalleryProps> = ({ photos }) => {
-  // L'état "filter" est maintenant nul au départ pour afficher les covers principales.
   const [filter, setFilter] = useState<'lifestyle' | 'exposition' | 'video' | null>(null);
-  // Pour Expositions, la sous-catégorie sélectionnée (null = non sélectionnée)
   const [selectedExpo, setSelectedExpo] = useState<'odorat' | 'monde' | 'voyage' | 'paris' | null>(null);
-  // Photo sélectionnée pour l'affichage en modal
   const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
 
-  // Pour obtenir les covers de sous-catégories d'expositions
   const expoCategories: Array<'odorat' | 'monde' | 'paris' | 'voyage'> = [
     'odorat',
     'monde',
-    'paris',
     'voyage',
+    'paris',
   ];
   const expoCovers = expoCategories.map(category => {
     const cover = photos.find(photo => photo.category === category);
@@ -46,52 +42,46 @@ export const PhotoGallery: React.FC<GalleryProps> = ({ photos }) => {
     }
   }
 
-  // Déterminer la cover principale pour chaque catégorie
   const mainCovers = {
     lifestyle: {
       coverUrl: photos.find(photo => photo.category === 'lifestyle')?.url || '',
       title: "Lifestyle"
     },
     exposition: {
-      // Pour Expositions, on prend la cover de la première sous-catégorie (ici odorat) comme représentation
       coverUrl: expoCovers[0].coverUrl || '',
       title: "Expositions"
     },
     video: {
-      coverUrl: '', // Si aucune image n'est disponible pour la vidéo, un placeholder sera affiché.
-      title: "Vidéos"
+      coverUrl: '',
+      title: "Movies"
     }
   };
 
-  // Filtrer les photos pour l'affichage du contenu
   let filteredPhotos: Photo[] = [];
   if (filter === 'lifestyle') {
     filteredPhotos = photos.filter(photo => photo.category === 'lifestyle');
   } else if (filter === 'exposition' && selectedExpo) {
     filteredPhotos = photos.filter(photo => photo.category === selectedExpo);
   }
-  // Le cas "video" est géré par le composant VideoGallery.
 
-  // Breakpoints pour le layout Masonry
   const breakpointColumnsObj = {
     default: 3,
     1024: 2,
     640: 1,
   };
 
-  // Si aucune catégorie n'est sélectionnée, afficher les covers principales
   if (!filter) {
     return (
       <section className="container mx-auto px-4 py-16">
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-1 gap-4">
           {(['lifestyle', 'exposition', 'video'] as const).map(main => (
             <div key={main} className="cursor-pointer" onClick={() => setFilter(main)}>
-              <div className="overflow-hidden rounded-lg bg-gray-900 h-48">
+              <div className="overflow-hidden rounded-lg bg-gray-900 h-64">
                 {mainCovers[main].coverUrl ? (
                   <img
                     src={mainCovers[main].coverUrl}
                     alt={mainCovers[main].title}
-                    className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+                    className="w-full h-full object-cover transition-transform duration-500 ease-in-out hover:scale-110"
                   />
                 ) : (
                   <div className="w-full h-full bg-gray-700 flex items-center justify-center">
@@ -107,43 +97,52 @@ export const PhotoGallery: React.FC<GalleryProps> = ({ photos }) => {
     );
   }
 
-  // Une fois qu'une catégorie principale est sélectionnée, on affiche un bouton de retour.
+  const BackButton = ({ onClick, label }: { onClick: () => void; label: string }) => (
+    <div className="container mx-auto px-4 py-4">
+      <button
+        onClick={onClick}
+        className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700 transition"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+        </svg>
+        <span>{label}</span>
+      </button>
+    </div>
+  );
+
   return (
     <>
-      <div className="container mx-auto px-4 py-4">
-        <button
-          onClick={() => {
-            setFilter(null);
-            setSelectedExpo(null);
-          }}
-          className="text-blue-500 underline"
-        >
-          Retour aux catégories
-        </button>
-      </div>
+      {/* Bouton de retour aux catégories */}
+      <BackButton
+        onClick={() => {
+          setFilter(null);
+          setSelectedExpo(null);
+        }}
+        label="Retour aux catégories"
+      />
 
       {filter === 'video' ? (
         <VideoGallery selectedSubcategory={null} />
       ) : filter === 'exposition' && selectedExpo === null ? (
-        // Pour Expositions, si aucune sous-catégorie n'est choisie, afficher les 4 covers des expos
         <section className="container mx-auto px-4 py-16">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-1 gap-4">
             {expoCovers.map(expo => (
               <div
                 key={expo.category}
                 className="cursor-pointer"
                 onClick={() => setSelectedExpo(expo.category)}
               >
-                <div className="overflow-hidden rounded-lg bg-gray-900 h-48">
+                <div className="overflow-hidden rounded-lg bg-gray-900 h-64">
                   {expo.coverUrl ? (
                     <img
                       src={expo.coverUrl}
                       alt={expo.title}
-                      className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+                      className="w-full h-full object-cover transition-transform duration-500 ease-in-out hover:scale-110"
                     />
                   ) : (
                     <div className="w-full h-full bg-gray-700 flex items-center justify-center">
-                      <span className="text-white text-sm">{expo.title}</span>
+                      <span className="text-white text-lg">{expo.title}</span>
                     </div>
                   )}
                 </div>
@@ -153,17 +152,9 @@ export const PhotoGallery: React.FC<GalleryProps> = ({ photos }) => {
           </div>
         </section>
       ) : (
-        // Pour Lifestyle ou pour Expositions avec une sous-catégorie sélectionnée
         <section className="container mx-auto px-4 py-16">
           {filter === 'exposition' && selectedExpo && (
-            <div className="mb-4">
-              <button
-                onClick={() => setSelectedExpo(null)}
-                className="text-blue-500 underline"
-              >
-                Retour aux expositions
-              </button>
-            </div>
+            <BackButton onClick={() => setSelectedExpo(null)} label="Retour aux expositions" />
           )}
           <Masonry
             breakpointCols={breakpointColumnsObj}
@@ -181,7 +172,7 @@ export const PhotoGallery: React.FC<GalleryProps> = ({ photos }) => {
                     <img
                       src={photo.url}
                       alt={photo.name}
-                      className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105"
+                      className="w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-110"
                     />
                   </div>
                 </div>
