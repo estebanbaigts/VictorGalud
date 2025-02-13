@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Masonry from 'react-masonry-css';
 import { Photo } from '../types';
 import { PhotoModal } from './PhotoModal';
 import { VideoGallery } from './VideoGallery';
@@ -8,23 +9,25 @@ interface GalleryProps {
 }
 
 export const PhotoGallery: React.FC<GalleryProps> = ({ photos }) => {
-  // Le filtre peut être 'lifestyle', 'exposition' ou 'video'
   const [filter, setFilter] = useState<'lifestyle' | 'exposition' | 'video'>('lifestyle');
-  // Pour les expositions, sélection d'une sous-catégorie (par exemple 'odorat' ou 'monde')
-  const [selectedExpo, setSelectedExpo] = useState<'odorat' | 'monde' | null>(null);
-  // Pour le modal photo
+  const [selectedExpo, setSelectedExpo] = useState<'odorat' | 'monde' | 'voyage' | 'paris' | null>(null);
   const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
 
-  // Filtrer uniquement les photos pour les filtres photo (lifestyle ou exposition)
   const filteredPhotos = photos.filter(photo => {
     if (filter === 'lifestyle') return photo.category === 'lifestyle';
     if (filter === 'exposition' && selectedExpo) return photo.category === selectedExpo;
     return false;
   });
 
+  const breakpointColumnsObj = {
+    default: 2,
+    1024: 1,
+    640: 1,
+  };
+
   return (
     <>
-      {/* Boutons Glassmorphism */}
+      {/* Onglets principaux */}
       <div className="flex justify-center gap-4 mb-6">
         <button
           onClick={() => { setFilter('lifestyle'); setSelectedExpo(null); }}
@@ -33,30 +36,12 @@ export const PhotoGallery: React.FC<GalleryProps> = ({ photos }) => {
           Lifestyle
         </button>
 
-        <div className="relative">
-          <button
-            onClick={() => { setFilter('exposition'); }}
-            className={`glass-button ${filter === 'exposition' ? 'active' : ''}`}
-          >
-            Expositions
-          </button>
-          {filter === 'exposition' && (
-            <div className="absolute left-0 mt-2 w-48 bg-white/10 backdrop-blur-lg border border-white/20 rounded-lg shadow-lg p-2">
-              <button
-                onClick={() => setSelectedExpo('odorat')}
-                className={`dropdown-item ${selectedExpo === 'odorat' ? 'active' : ''}`}
-              >
-                Un regard vers l'odorat
-              </button>
-              <button
-                onClick={() => setSelectedExpo('monde')}
-                className={`dropdown-item ${selectedExpo === 'monde' ? 'active' : ''}`}
-              >
-                Around the world portrait
-              </button>
-            </div>
-          )}
-        </div>
+        <button
+          onClick={() => { setFilter('exposition'); setSelectedExpo(null); }}
+          className={`glass-button ${filter === 'exposition' ? 'active' : ''}`}
+        >
+          Expositions
+        </button>
 
         <button
           onClick={() => { setFilter('video'); setSelectedExpo(null); }}
@@ -66,19 +51,52 @@ export const PhotoGallery: React.FC<GalleryProps> = ({ photos }) => {
         </button>
       </div>
 
-      {/* Affichage conditionnel en fonction du filtre */}
+      {/* Sous-onglets pour "Expositions" affichés horizontalement */}
+      {filter === 'exposition' && (
+        <div className="flex justify-center gap-3 mb-6">
+          <button
+            onClick={() => setSelectedExpo('odorat')}
+            className={`sub-tab ${selectedExpo === 'odorat' ? 'active' : ''}`}
+          >
+            Un regard vers l'odorat
+          </button>
+          <button
+            onClick={() => setSelectedExpo('monde')}
+            className={`sub-tab ${selectedExpo === 'monde' ? 'active' : ''}`}
+          >
+            Around the world portrait
+          </button>
+          <button
+            onClick={() => setSelectedExpo('paris')}
+            className={`sub-tab ${selectedExpo === 'paris' ? 'active' : ''}`}
+          >
+            Parisiens
+          </button>
+          <button
+            onClick={() => setSelectedExpo('voyage')}
+            className={`sub-tab ${selectedExpo === 'voyage' ? 'active' : ''}`}
+          >
+            Plage argentique
+          </button>
+        </div>
+      )}
+
+      {/* Affichage conditionnel */}
       {filter === 'video' ? (
-        // Utilisation du composant VideoGallery que tu as fourni
+        // Affichage de la vidéothèque
         <VideoGallery selectedSubcategory={null} />
       ) : (
-        // Affichage de la grille de photos pour lifestyle et expositions
+        // Affichage des photos en mode Masonry pour Lifestyle et Expositions
         <section className="container mx-auto px-4 py-16">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          <Masonry
+            breakpointCols={breakpointColumnsObj}
+            className="flex gap-4"
+            columnClassName="masonry-column"
+          >
             {filteredPhotos.length > 0 ? (
-              filteredPhotos.map((photo) => (
+              filteredPhotos.map(photo => (
                 <div
                   key={photo.id}
-                  // Suppression de l'aspect ratio fixe pour laisser l'image prendre sa taille réelle
                   className="group cursor-pointer"
                   onClick={() => setSelectedPhoto(photo)}
                 >
@@ -86,20 +104,21 @@ export const PhotoGallery: React.FC<GalleryProps> = ({ photos }) => {
                     <img
                       src={photo.url}
                       alt={photo.name}
-                      className="w-full h-auto object-contain transition-transform duration-700 group-hover:scale-105"
+                      className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105"
                     />
                   </div>
                 </div>
               ))
             ) : (
-              <p className="text-center text-gray-400 col-span-full">
+              <p className="text-center text-gray-400">
                 Aucune image trouvée pour cette catégorie.
               </p>
             )}
-          </div>
+          </Masonry>
         </section>
       )}
 
+      {/* Modal d'affichage de la photo */}
       {selectedPhoto && filter !== 'video' && (
         <PhotoModal
           photo={selectedPhoto}

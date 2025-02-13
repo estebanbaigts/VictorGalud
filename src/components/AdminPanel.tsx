@@ -15,6 +15,7 @@ const categories = [
       { id: 'odorat', label: 'Un regard vers l\'odorat' },
       { id: 'monde', label: 'Around the world portrait' },
       { id: 'voyage', label: 'Plage argentique' },
+      { id: 'paris', label: 'Parisiens' },
     ]
   },
 ];
