@@ -26,9 +26,6 @@ const About: React.FC = () => {
           <p className="text-lg">
             Welcome to the About section! Here you can find information about Victor Galud.
           </p>
-          <Link to="/#gallery" className="text-blue-500 underline mt-4 block">
-            Go to Gallery
-          </Link>
         </div>  
       </section>
     </div>

@@ -160,7 +160,7 @@ export const PhotoGallery: React.FC<GalleryProps> = ({ photos }) => {
     <div className="container mx-auto px-4 py-4">
       <button
         onClick={onClick}
-        className="flex items-center gap-2 px-4 py-2 bg-black text-white rounded-full shadow-lg hover:bg-blue-700 transition"
+        className="flex items-center gap-2 px-4 py-2 bg-black text-white rounded-full shadow-lg hover:bg-gray-700 transition"
       >
         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="white">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
