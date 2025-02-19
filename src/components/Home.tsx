@@ -3,6 +3,10 @@ import { Photo } from '../types';
 import { PhotoGallery } from './PhotoGallery';
 import { VideoGallery } from './VideoGallery';
 import { Footer } from './Footer';
+import Bio from '../components/Bio';
+import FadeInSection from '../components/FadeInSection';
+
+
 import { Instagram, Linkedin, Video, Phone } from 'lucide-react';
 // import { Navigation } from './Navigation';
 // import { CategoryFilter } from './CategoryFilter';
@@ -32,11 +36,6 @@ export const Home: React.FC<HomeProps> = ({ photos }) => {
     if (gallerySection) {
       gallerySection.scrollIntoView({ behavior: "smooth" });
     }
-  };
-
-  const handleCategoryChange = (category: string, subcategory: string | null) => {
-    setSelectedCategory(category);
-    setSelectedSubcategory(subcategory);
   };
 
   const filteredPhotos = selectedSubcategory
@@ -120,18 +119,15 @@ export const Home: React.FC<HomeProps> = ({ photos }) => {
           </button>
         </div>
       </div>
+      <FadeInSection delay={200}>
+              <Bio />
+
 
       <div id="gallery" className="min-h-screen">
-        {/* <CategoryFilter
-          selectedCategory={selectedCategory}
-          selectedSubcategory={selectedSubcategory}
-          onCategoryChange={handleCategoryChange}
-        /> */}
         {renderContent()}
       </div>
-
-      {/* <Contact /> */}
       <Footer />
+      </FadeInSection>
     </div>
   );
 };

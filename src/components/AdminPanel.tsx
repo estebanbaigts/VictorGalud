@@ -6,16 +6,31 @@ import * as api from '../services/api';
 const categories = [
   {
     id: 'photos',
-    label: 'Lifestyle', // Pas de sous-catégorie pour Lifestyle
+    label: 'Lifestyle',
+  },
+  {
+    id: 'artist',
+    label: 'Artists',
   },
   {
     id: 'expo',
     label: 'Exposition',
     subcategories: [
       { id: 'odorat', label: 'Un regard vers l\'odorat' },
-      { id: 'monde', label: 'Around the world portrait' },
+      { id: 'monde', label: 'portraits du monde' },
       { id: 'voyage', label: 'Plage argentique' },
       { id: 'paris', label: 'Parisiens' },
+    ]
+  },
+  {
+    id: 'capture',
+    label: 'Capture',
+    subcategories: [
+      { id: 'fefe-drink', label: 'Un regard vers l\'odorat' },
+      { id: 'stage', label: 'Around the world portrait' },
+      { id: 'interbev-bts', label: 'Plage argentique' },
+      { id: 'worlds', label: 'Parisiens' },
+      { id: 'skate', label: 'Parisiens' },
     ]
   },
 ];

@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useSwipeable } from 'react-swipeable';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Photo } from '../types';
 
@@ -27,8 +28,14 @@ export const PhotoModal: React.FC<PhotoModalProps> = ({ photo, onClose, onNaviga
     };
   }, [onClose, onNavigate]);
 
+  const handlers = useSwipeable({
+    onSwipedLeft: () => onNavigate('next'),
+    onSwipedRight: () => onNavigate('prev'),
+    trackMouse: true,
+  });
+
   return (
-    <div className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4">
+    <div {...handlers} className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4">
       <button onClick={onClose} className="absolute top-4 right-4 text-white hover:text-gray-300">
         <X className="w-8 h-8" />
       </button>

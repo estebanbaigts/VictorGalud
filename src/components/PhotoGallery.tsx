@@ -116,6 +116,18 @@ export const PhotoGallery: React.FC<GalleryProps> = ({ photos }) => {
     640: 1,
   };
 
+  const handleNavigate = (direction: 'prev' | 'next') => {
+    if (!selectedPhoto) return;
+
+    const currentIndex = filteredPhotos.findIndex(photo => photo.id === selectedPhoto.id);
+    let newIndex = direction === 'prev' ? currentIndex - 1 : currentIndex + 1;
+
+    if (newIndex < 0) newIndex = filteredPhotos.length - 1;
+    if (newIndex >= filteredPhotos.length) newIndex = 0;
+
+    setSelectedPhoto(filteredPhotos[newIndex]);
+  };
+
   if (!filter) {
     return (
       <section className="container mx-auto px-4 py-16">
@@ -268,6 +280,7 @@ export const PhotoGallery: React.FC<GalleryProps> = ({ photos }) => {
           photo={selectedPhoto}
           photos={filteredPhotos}
           onClose={() => setSelectedPhoto(null)}
+          onNavigate={handleNavigate}
         />
       )}
     </>
