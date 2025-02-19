@@ -132,7 +132,7 @@ export const PhotoGallery: React.FC<GalleryProps> = ({ photos }) => {
   if (!filter) {
     return (
       <section className="container mx-auto px-4 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           {(['artist', 'lifestyle', 'exposition', 'capture', 'video'] as const).map(main => (
             <div key={main} className="cursor-pointer" onClick={() => setFilter(main)}>
               <div className="overflow-hidden rounded-lg bg-gray-900 h-64 w-full md:h-80 lg:h-96">
