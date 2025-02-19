@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Home } from './components/Home';
-import { AdminLogin } from './components/AdminLogin';
-import { AdminPanel } from './components/AdminPanel';
+import { AdminLogin } from './components/admin/AdminLogin';
+import { AdminPanel } from './components/admin/AdminPanel';
 import { usePhotos } from './hooks/usePhotos';
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSwipeable } from 'react-swipeable';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
-import { Photo } from '../types';
+import { Photo } from '../../types';
 
 interface PhotoModalProps {
   photo: Photo;

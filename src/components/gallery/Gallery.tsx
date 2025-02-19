@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useInView } from 'react-intersection-observer';
-import { Photo } from '../types';
+import { Photo } from '../../types';
 import { PhotoModal } from './PhotoModal';
 
 interface GalleryProps {

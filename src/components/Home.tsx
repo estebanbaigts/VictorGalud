@@ -1,21 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { Photo } from '../types';
-import { PhotoGallery } from './PhotoGallery';
-import { VideoGallery } from './VideoGallery';
-import { Footer } from './Footer';
-import Bio from '../components/Bio';
-import FadeInSection from '../components/FadeInSection';
-import { Instagram, Linkedin, Video, Phone } from 'lucide-react';
-// import { Navigation } from './Navigation';
-// import { CategoryFilter } from './CategoryFilter';
-// import { Contact } from './Contact';
+import { PhotoGallery } from './gallery/PhotoGallery';
+import { VideoGallery } from './gallery/VideoGallery';
+import { Footer } from './footer/Footer';
+import Bio from './style/Bio';
+import About from './pages/About';
+import { Instagram, Linkedin, Video } from 'lucide-react';
+ import { Navigation } from './navbar/Navigation';
+
 
 interface HomeProps {
   photos: Photo[];
 }
 
 export const Home: React.FC<HomeProps> = ({ photos }) => {
-  // const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('photos');
   const [selectedSubcategory, setSelectedSubcategory] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
@@ -54,7 +53,7 @@ export const Home: React.FC<HomeProps> = ({ photos }) => {
 
   return (
     <div className="min-h-screen bg-black text-white">
-      {/* <Navigation isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} scrolled={scrolled} /> */}
+      <Navigation isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} scrolled={scrolled} />
 
       <div id="home" className="h-screen flex flex-col items-center justify-center px-4 sm:px-8 md:px-16">
         <div className="flex flex-col items-center justify-center min-h-screen space-y-12 sm:space-y-16 lg:space-y-20">
@@ -95,7 +94,6 @@ export const Home: React.FC<HomeProps> = ({ photos }) => {
               rel="noopener noreferrer"
               className="text-gray-400 hover:text-white transition-colors transform hover:scale-110 duration-300"
             >
-              <Phone className="w-6 h-6" />
             </a>
           </div>
 
@@ -118,8 +116,7 @@ export const Home: React.FC<HomeProps> = ({ photos }) => {
         </div>
       </div>
       <Bio />
-
-
+      <About />
       <div id="gallery" className="min-h-screen">
         {renderContent()}
       </div>

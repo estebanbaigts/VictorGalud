@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Upload, Trash2, ArrowLeft } from 'lucide-react';
-import { Photo } from '../types';
-import * as api from '../services/api';
+import { Photo } from '../../types';
+import * as api from '../../services/api';
 
 const categories = [
   {

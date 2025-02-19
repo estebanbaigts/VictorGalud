@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import Masonry from 'react-masonry-css';
-import { Photo } from '../types';
+import { Photo } from '../../types';
 import { PhotoModal } from './PhotoModal';
 import { VideoGallery } from './VideoGallery';
-import FadeInSection from './FadeInSection';
+import FadeInSection from '../style/FadeInSection';
 
 interface GalleryProps {
   photos: Photo[];
