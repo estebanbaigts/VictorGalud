@@ -1,24 +1,21 @@
 import React, { useRef, useState, useEffect, ReactNode } from 'react';
-import { useSprings, animated } from '@react-spring/web';
+import { useSpring, animated } from '@react-spring/web';
 
 interface FadeInSectionProps {
-  children: ReactNode[];
+  children: ReactNode;
   delay?: number;
 }
 
-const FadeInSection: React.FC<FadeInSectionProps> = ({ children, delay = 100 }) => {
+const FadeInSection: React.FC<FadeInSectionProps> = ({ children, delay = 170 }) => {
   const ref = useRef<HTMLDivElement>(null);
   const [isVisible, setVisible] = useState(false);
 
-  const springs = useSprings(
-    children.length,
-    children.map((_, i) => ({
-      opacity: isVisible ? 1 : 0,
-      transform: isVisible ? 'translateY(0)' : 'translateY(50px)',
-      config: { tension: 200, friction: 20 },
-      delay: i * delay,
-    }))
-  );
+  const props = useSpring({
+    opacity: isVisible ? 1 : 0,
+    transform: isVisible ? 'translateY(0)' : 'translateY(50px)',
+    config: { tension: 200, friction: 20 },
+    delay,
+  });
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -37,13 +34,9 @@ const FadeInSection: React.FC<FadeInSectionProps> = ({ children, delay = 100 }) 
   }, []);
 
   return (
-    <div ref={ref}>
-      {springs.map((props, index) => (
-        <animated.div key={index} style={props}>
-          {children[index]}
-        </animated.div>
-      ))}
-    </div>
+    <animated.div style={props} ref={ref}>
+      {children}
+    </animated.div>
   );
 };
 

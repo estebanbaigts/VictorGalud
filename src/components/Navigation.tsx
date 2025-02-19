@@ -24,7 +24,7 @@
 //             Victor Galud
 //           </span>
 //         </div>
-        
+
 //         <button
 //           onClick={() => setIsMenuOpen(!isMenuOpen)}
 //           className="lg:hidden text-white"
@@ -49,7 +49,7 @@
 //               </a>
 //             ))}
 //           </div>
-//         </div>x
+//         </div>
 //       </div>
 //     </nav>
 //   );

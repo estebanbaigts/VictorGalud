@@ -3,6 +3,7 @@ import Masonry from 'react-masonry-css';
 import { Photo } from '../types';
 import { PhotoModal } from './PhotoModal';
 import { VideoGallery } from './VideoGallery';
+import FadeInSection from './FadeInSection';
 
 interface GalleryProps {
   photos: Photo[];
@@ -251,20 +252,21 @@ export const PhotoGallery: React.FC<GalleryProps> = ({ photos }) => {
             columnClassName="masonry-column"
           >
             {filteredPhotos.length > 0 ? (
-              filteredPhotos.map(photo => (
-                <div
-                  key={photo.id}
-                  className="group cursor-pointer"
-                  onClick={() => setSelectedPhoto(photo)}
-                >
-                  <div className="overflow-hidden rounded-lg bg-gray-900">
-                    <img
-                      src={photo.url}
-                      alt={photo.name}
-                      className="w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-110"
-                    />
+              filteredPhotos.map((photo, index) => (
+                <FadeInSection key={photo.id} delay={index * 100}>
+                  <div
+                    className="group cursor-pointer"
+                    onClick={() => setSelectedPhoto(photo)}
+                  >
+                    <div className="overflow-hidden rounded-lg bg-gray-900">
+                      <img
+                        src={photo.url}
+                        alt={photo.name}
+                        className="w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-110"
+                      />
+                    </div>
                   </div>
-                </div>
+                </FadeInSection>
               ))
             ) : (
               <p className="text-center text-gray-400">

@@ -5,8 +5,6 @@ import { VideoGallery } from './VideoGallery';
 import { Footer } from './Footer';
 import Bio from '../components/Bio';
 import FadeInSection from '../components/FadeInSection';
-
-
 import { Instagram, Linkedin, Video, Phone } from 'lucide-react';
 // import { Navigation } from './Navigation';
 // import { CategoryFilter } from './CategoryFilter';
@@ -119,15 +117,13 @@ export const Home: React.FC<HomeProps> = ({ photos }) => {
           </button>
         </div>
       </div>
-      <FadeInSection delay={200}>
-              <Bio />
+      <Bio />
 
 
       <div id="gallery" className="min-h-screen">
         {renderContent()}
       </div>
       <Footer />
-      </FadeInSection>
     </div>
   );
 };

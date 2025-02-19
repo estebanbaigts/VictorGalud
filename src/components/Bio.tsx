@@ -12,7 +12,7 @@ const Bio: React.FC = () => {
         <SplitText
           text="Welcome to the Bio section! Here you can find the latest updates and news."
           className="text-xl"
-          delay={50}
+          delay={20}
           animationFrom={{ opacity: 0, transform: 'translate3d(0,50px,0)' }}
           animationTo={{ opacity: 1, transform: 'translate3d(0,0,0)' }}
           easing="easeInOutCubic"
