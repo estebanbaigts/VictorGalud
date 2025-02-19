@@ -114,7 +114,7 @@ export const Home: React.FC<HomeProps> = ({ photos }) => {
           </button>
         </div>
       </div>
-      <Bio />
+      {/* <Bio /> */}
       <div id="gallery" className="min-h-screen">
         {renderContent()}
       </div>
