@@ -4,6 +4,7 @@ import { Home } from './components/Home';
 import { AdminLogin } from './components/admin/AdminLogin';
 import { AdminPanel } from './components/admin/AdminPanel';
 import { usePhotos } from './hooks/usePhotos';
+import About  from './components/pages/About';
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const isAuthenticated = localStorage.getItem('isAdminAuthenticated') === 'true';
@@ -18,6 +19,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home photos={photos} />} />
         <Route path="/admin" element={<AdminLogin />} />
+        <Route path="/about" element={<About />} />
         <Route
           path="/admin/dashboard"
           element={

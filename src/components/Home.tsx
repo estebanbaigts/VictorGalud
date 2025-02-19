@@ -4,7 +4,6 @@ import { PhotoGallery } from './gallery/PhotoGallery';
 import { VideoGallery } from './gallery/VideoGallery';
 import { Footer } from './footer/Footer';
 import Bio from './style/Bio';
-import About from './pages/About';
 import { Instagram, Linkedin, Video } from 'lucide-react';
  import { Navigation } from './navbar/Navigation';
 
@@ -116,7 +115,6 @@ export const Home: React.FC<HomeProps> = ({ photos }) => {
         </div>
       </div>
       <Bio />
-      <About />
       <div id="gallery" className="min-h-screen">
         {renderContent()}
       </div>

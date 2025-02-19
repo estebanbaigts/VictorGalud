@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { Photo } from '../../types';
 import { PhotoModal } from './PhotoModal';
+import { Link } from 'react-router-dom';
 
 interface GalleryProps {
     photos: Photo[];
@@ -21,6 +22,9 @@ export const Gallery: React.FC<GalleryProps> = ({ photos }) => {
                 ref={ref}
                 className="container mx-auto px-4 py-16"
             >
+                <Link to="/#top" className="text-blue-500 underline mb-4 block">
+                    Home
+                </Link>
                 <h2 className={`text-4xl font-bold text-center mb-12 transition-all duration-1000 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
                     }`}>
                     Gallery
