@@ -52,11 +52,11 @@ export const PhotoGallery: React.FC<GalleryProps> = ({ photos }) => {
       case 'odorat':
         return "Un regard vers l'odorat";
       case 'monde':
-        return "Around the world portrait";
+        return "Around the world";
       case 'paris':
-        return "Hiver parisien";
+        return "Parisians winter";
       case 'voyage':
-        return "Plage argentique";
+        return "Plages argentiques";
       default:
         return "";
     }
@@ -81,24 +81,24 @@ export const PhotoGallery: React.FC<GalleryProps> = ({ photos }) => {
 
   const mainCovers = {
     lifestyle: {
-      coverUrl: photos.find(photo => photo.category === 'lifestyle')?.url || '',
+      coverUrl: 'lifestyle.jpeg',
       title: "Lifestyle"
     },
     exposition: {
-      coverUrl: expoCovers[0].coverUrl || '',
-      title: "Expositions"
+      coverUrl: 'SURF.jpeg',
+      title: "Exhibitons"
     },
     video: {
-      coverUrl: 'couv.png',
+      coverUrl: 'movie.png',
       title: "Movies"
     },
     artist: {
-      coverUrl: photos.find(photo => photo.category === 'artist')?.url || '',
-      title: "Artist"
+      coverUrl:  'artist.jpg',
+      title: "Artists"
     },
     capture: {
-      coverUrl: captureCovers[0].coverUrl || '',
-      title: "Capture"
+      coverUrl:  'captures.jpg',
+      title: "Captures"
     }
   };
 
@@ -132,10 +132,10 @@ export const PhotoGallery: React.FC<GalleryProps> = ({ photos }) => {
   if (!filter) {
     return (
       <section className="container mx-auto px-4 py-16">
-        <div className="flex flex-col gap-4">
-          {(['lifestyle', 'exposition', 'video', 'artist', 'capture'] as const).map(main => (
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+          {(['artist', 'lifestyle', 'exposition', 'capture', 'video'] as const).map(main => (
             <div key={main} className="cursor-pointer" onClick={() => setFilter(main)}>
-              <div className="overflow-hidden rounded-lg bg-gray-900 h-64 w-full">
+              <div className="overflow-hidden rounded-lg bg-gray-900 h-64 w-full md:h-80 lg:h-96">
                 {mainCovers[main].coverUrl ? (
                   <img
                     src={mainCovers[main].coverUrl}
@@ -172,7 +172,6 @@ export const PhotoGallery: React.FC<GalleryProps> = ({ photos }) => {
 
   return (
     <>
-      {/* Bouton de retour aux catégories */}
       <BackButton
         onClick={() => {
           setFilter(null);
@@ -193,7 +192,7 @@ export const PhotoGallery: React.FC<GalleryProps> = ({ photos }) => {
                 className="cursor-pointer"
                 onClick={() => setSelectedExpo(expo.category)}
               >
-                <div className="overflow-hidden rounded-lg bg-gray-900 h-64 w-full">
+                <div className="overflow-hidden rounded-lg bg-gray-900 h-64 w-full md:h-80 lg:h-96">
                   {expo.coverUrl ? (
                     <img
                       src={expo.coverUrl}
@@ -220,7 +219,7 @@ export const PhotoGallery: React.FC<GalleryProps> = ({ photos }) => {
                 className="cursor-pointer"
                 onClick={() => setSelectedCapture(capture.category)}
               >
-                <div className="overflow-hidden rounded-lg bg-gray-900 h-64 w-full">
+                <div className="overflow-hidden rounded-lg bg-gray-900 h-64 w-full md:h-80 lg:h-96">
                   {capture.coverUrl ? (
                     <img
                       src={capture.coverUrl}

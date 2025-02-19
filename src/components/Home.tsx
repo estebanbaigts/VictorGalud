@@ -67,7 +67,7 @@ export const Home: React.FC<HomeProps> = ({ photos }) => {
               href="https://www.instagram.com/galudboy/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-400 hover:text-white transition-colors transform hover:scale-110 duration-300"
+              className="text-white hover:text-white transition-colors transform hover:scale-110 duration-300"
             >
               <Instagram className="w-6 h-6" />
             </a>
@@ -75,7 +75,7 @@ export const Home: React.FC<HomeProps> = ({ photos }) => {
               href="https://www.linkedin.com/in/victor-galud-68159b113/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-400 hover:text-white transition-colors transform hover:scale-110 duration-300"
+              className="text-white hover:text-white transition-colors transform hover:scale-110 duration-300"
             >
               <Linkedin className="w-6 h-6" />
             </a>
@@ -83,7 +83,7 @@ export const Home: React.FC<HomeProps> = ({ photos }) => {
               href="https://vimeo.com/victorgalud"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-400 hover:text-white transition-colors transform hover:scale-110 duration-300"
+              className="text-white hover:text-white transition-colors transform hover:scale-110 duration-300"
             >
               <Video className="w-6 h-6" />
               </a>
@@ -91,7 +91,7 @@ export const Home: React.FC<HomeProps> = ({ photos }) => {
               href="https://vimeo.com/victorgalud"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-400 hover:text-white transition-colors transform hover:scale-110 duration-300"
+              className="text-white hover:text-white transition-colors transform hover:scale-110 duration-300"
             >
             </a>
           </div>
