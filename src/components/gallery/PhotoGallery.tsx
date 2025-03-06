@@ -129,6 +129,31 @@ export const PhotoGallery: React.FC<GalleryProps> = ({ photos }) => {
     setSelectedPhoto(filteredPhotos[newIndex]);
   };
 
+  const renderSubcategories = (covers: { category: string; coverUrl: string; title: string }[], setSelected: (category: string) => void) => (
+    <section className="container mx-auto px-4 py-16">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        {covers.map(cover => (
+          <div key={cover.category} className="cursor-pointer" onClick={() => setSelected(cover.category)}>
+            <div className="overflow-hidden rounded-lg bg-gray-900 h-64 w-full md:h-80 lg:h-96">
+              {cover.coverUrl ? (
+                <img
+                  src={cover.coverUrl}
+                  alt={cover.title}
+                  className="w-full h-full object-cover transition-transform duration-500 ease-in-out hover:scale-110"
+                />
+              ) : (
+                <div className="w-full h-full bg-gray-700 flex items-center justify-center">
+                  <span className="text-white text-xl">{cover.title}</span>
+                </div>
+              )}
+            </div>
+            <p className="text-center mt-2 text-white text-lg">{cover.title}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+
   if (!filter) {
     return (
       <section className="container mx-auto px-4 py-16">
@@ -184,59 +209,9 @@ export const PhotoGallery: React.FC<GalleryProps> = ({ photos }) => {
       {filter === 'video' ? (
         <VideoGallery selectedSubcategory={null} />
       ) : filter === 'exposition' && selectedExpo === null ? (
-        <section className="container mx-auto px-4 py-16">
-          <div className="flex flex-col gap-4">
-            {expoCovers.map(expo => (
-              <div
-                key={expo.category}
-                className="cursor-pointer"
-                onClick={() => setSelectedExpo(expo.category)}
-              >
-                <div className="overflow-hidden rounded-lg bg-gray-900 h-64 w-full md:h-80 lg:h-96">
-                  {expo.coverUrl ? (
-                    <img
-                      src={expo.coverUrl}
-                      alt={expo.title}
-                      className="w-full h-full object-cover transition-transform duration-500 ease-in-out hover:scale-110"
-                    />
-                  ) : (
-                    <div className="w-full h-full bg-gray-700 flex items-center justify-center">
-                      <span className="text-white text-lg">{expo.title}</span>
-                    </div>
-                  )}
-                </div>
-                <p className="text-center mt-2 text-white text-sm">{expo.title}</p>
-              </div>
-            ))}
-          </div>
-        </section>
+        renderSubcategories(expoCovers, setSelectedExpo)
       ) : filter === 'capture' && selectedCapture === null ? (
-        <section className="container mx-auto px-4 py-16">
-          <div className="flex flex-col gap-4">
-            {captureCovers.map(capture => (
-              <div
-                key={capture.category}
-                className="cursor-pointer"
-                onClick={() => setSelectedCapture(capture.category)}
-              >
-                <div className="overflow-hidden rounded-lg bg-gray-900 h-64 w-full md:h-80 lg:h-96">
-                  {capture.coverUrl ? (
-                    <img
-                      src={capture.coverUrl}
-                      alt={capture.title}
-                      className="w-full h-full object-cover transition-transform duration-500 ease-in-out hover:scale-110"
-                    />
-                  ) : (
-                    <div className="w-full h-full bg-gray-700 flex items-center justify-center">
-                      <span className="text-white text-lg">{capture.title}</span>
-                    </div>
-                  )}
-                </div>
-                <p className="text-center mt-2 text-white text-sm">{capture.title}</p>
-              </div>
-            ))}
-          </div>
-        </section>
+        renderSubcategories(captureCovers, setSelectedCapture)
       ) : (
         <section className="container mx-auto px-4 py-16">
           {filter === 'exposition' && selectedExpo && (

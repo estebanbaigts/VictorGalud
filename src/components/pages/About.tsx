@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Navigation } from '../navbar/Navigation';
-import { Link } from 'react-router-dom';
 
 const About: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -26,7 +25,7 @@ const About: React.FC = () => {
           <p className="text-lg">
             Welcome to the About section! Here you can find information about Victor Galud.
           </p>
-        </div>  
+        </div>
       </section>
     </div>
   );
