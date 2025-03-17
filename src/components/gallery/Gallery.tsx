@@ -52,7 +52,9 @@ export const Gallery: React.FC<GalleryProps> = ({ photos }) => {
             </section>
 
             {selectedPhoto && (
-                <PhotoModal photo={selectedPhoto} onClose={() => setSelectedPhoto(null)} />
+                <PhotoModal photo={selectedPhoto} onClose={() => setSelectedPhoto(null)} photos={[]} onNavigate={function (direction: 'prev' | 'next'): void {
+                    throw new Error('Function not implemented.');
+                } } />
             )}
         </>
     );

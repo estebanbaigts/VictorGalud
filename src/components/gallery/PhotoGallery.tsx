@@ -50,13 +50,13 @@ export const PhotoGallery: React.FC<GalleryProps> = ({ photos }) => {
   function getExpoTitle(category: 'odorat' | 'monde' | 'paris' | 'voyage'): string {
     switch (category) {
       case 'odorat':
-        return "Un regard vers l'odorat";
+        return "UN REGARD VERS L'ODORAT";
       case 'monde':
-        return "Around the world";
+        return "MONDE";
       case 'paris':
-        return "Parisians winter";
+        return "PARISIENS";
       case 'voyage':
-        return "Plages argentiques";
+        return "PLAGES ARGENTIQUES";
       default:
         return "";
     }
@@ -182,7 +182,7 @@ export const PhotoGallery: React.FC<GalleryProps> = ({ photos }) => {
   }
 
   const BackButton = ({ onClick, label }: { onClick: () => void; label: string }) => (
-    <div className="container mx-auto px-4 py-4">
+    <div className="sticky top-20 left-4 sm:left-6 md:left-10 z-50"> {/* Ajustez les positions pour mobile et desktop */}
       <button
         onClick={onClick}
         className="flex items-center gap-2 px-4 py-2 bg-black text-white rounded-full shadow-lg hover:bg-gray-700 transition"
@@ -199,11 +199,15 @@ export const PhotoGallery: React.FC<GalleryProps> = ({ photos }) => {
     <>
       <BackButton
         onClick={() => {
-          setFilter(null);
-          setSelectedExpo(null);
-          setSelectedCapture(null);
+          if (selectedExpo) {
+            setSelectedExpo(null); // Retour à la liste des expositions
+          } else if (selectedCapture) {
+            setSelectedCapture(null); // Retour à la liste des captures
+          } else {
+            setFilter(null); // Retour aux catégories principales
+          }
         }}
-        label="Retour aux catégories"
+        label="Retour"
       />
 
       {filter === 'video' ? (
@@ -214,12 +218,6 @@ export const PhotoGallery: React.FC<GalleryProps> = ({ photos }) => {
         renderSubcategories(captureCovers, setSelectedCapture)
       ) : (
         <section className="container mx-auto px-4 py-16">
-          {filter === 'exposition' && selectedExpo && (
-            <BackButton onClick={() => setSelectedExpo(null)} label="Retour aux expositions" />
-          )}
-          {filter === 'capture' && selectedCapture && (
-            <BackButton onClick={() => setSelectedCapture(null)} label="Retour aux captures" />
-          )}
           <Masonry
             breakpointCols={breakpointColumnsObj}
             className="flex gap-4"

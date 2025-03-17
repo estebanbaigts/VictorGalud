@@ -1,1 +1,30 @@
-[]
+[
+  {
+    "id": "1741278550689",
+    "url": "/uploads/1741278550679-IMG_0104.jpg",
+    "filename": "1741278550679-IMG_0104.jpg",
+    "name": "Untitled",
+    "category": "odorat"
+  },
+  {
+    "id": "1741278567596",
+    "url": "/uploads/1741278567576-IMG_0368.JPG",
+    "filename": "1741278567576-IMG_0368.JPG",
+    "name": "Untitled",
+    "category": "monde"
+  },
+  {
+    "id": "1741278584771",
+    "url": "/uploads/1741278584768-000011210018.jpg",
+    "filename": "1741278584768-000011210018.jpg",
+    "name": "Untitled",
+    "category": "paris"
+  },
+  {
+    "id": "1742225329824",
+    "url": "/uploads/1742225329819-SURF.jpeg",
+    "filename": "1742225329819-SURF.jpeg",
+    "name": "SURF",
+    "category": "voyage"
+  }
+]
