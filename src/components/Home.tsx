@@ -4,7 +4,7 @@ import { PhotoGallery } from './gallery/PhotoGallery';
 import { VideoGallery } from './gallery/VideoGallery';
 import { Footer } from './footer/Footer';
 import Bio from './style/Bio';
-import { Instagram, Linkedin, Video } from 'lucide-react';
+import { Instagram, Linkedin, Play } from 'lucide-react';
  import { Navigation } from './navbar/Navigation';
 
 
@@ -62,14 +62,14 @@ export const Home: React.FC<HomeProps> = ({ photos }) => {
             className="w-full sm:w-3/4 md:w-2/3 lg:w-1/2 h-auto animate-spin-slow"
           />
 
-          <div className="flex gap-4">
+          <div className="flex gap-8"> {/* Augmentez `gap-8` pour plus d'espacement */}
             <a
               href="https://www.instagram.com/galudboy/"
               target="_blank"
               rel="noopener noreferrer"
               className="text-white hover:text-white transition-colors transform hover:scale-110 duration-300"
             >
-              <Instagram className="w-6 h-6" />
+              <Instagram className="w-8 h-8" /> {/* Augmentez `w-8 h-8` pour agrandir les icônes */}
             </a>
             <a
               href="https://www.linkedin.com/in/victor-galud-68159b113/"
@@ -77,7 +77,7 @@ export const Home: React.FC<HomeProps> = ({ photos }) => {
               rel="noopener noreferrer"
               className="text-white hover:text-white transition-colors transform hover:scale-110 duration-300"
             >
-              <Linkedin className="w-6 h-6" />
+              <Linkedin className="w-8 h-8" /> {/* Augmentez `w-8 h-8` pour agrandir les icônes */}
             </a>
             <a
               href="https://vimeo.com/victorgalud"
@@ -85,14 +85,7 @@ export const Home: React.FC<HomeProps> = ({ photos }) => {
               rel="noopener noreferrer"
               className="text-white hover:text-white transition-colors transform hover:scale-110 duration-300"
             >
-              <Video className="w-6 h-6" />
-              </a>
-              <a
-              href="https://vimeo.com/victorgalud"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-white hover:text-white transition-colors transform hover:scale-110 duration-300"
-            >
+              <Play className="w-8 h-8" /> {/* Augmentez `w-8 h-8` pour agrandir les icônes */}
             </a>
           </div>
 
